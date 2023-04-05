@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "775948610033",
+    "project_id": "gals-51236",
+    "storage_bucket": "gals-51236.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775948610033:android:74a44b188be593936bfc50",
+        "android_client_info": {
+          "package_name": "com.example.gals_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775948610033-3eh56nn9g66pfp4jmtoti2l5d4agfrsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVdC3aScpm6CfzUwxYrChGy4oIjkMz-_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775948610033-3eh56nn9g66pfp4jmtoti2l5d4agfrsr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "775948610033-t8aiqo532tetm2sl36qdoq6v9ue5dfdg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.galsApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
