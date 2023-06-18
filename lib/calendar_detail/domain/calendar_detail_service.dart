@@ -3,7 +3,7 @@ import 'package:gals_app/calendar_detail/infrastructure/calendar_detail_reposito
 import 'package:gals_app/calender/state/viewitem/calendar_item.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final calendarDetailService = Provider.autoDispose(
+final calendarDetailService = Provider(
   (ref) => CalendarDetailService(
     calendarDetailRepository: ref.read(calendarDetailRepository),
   ),

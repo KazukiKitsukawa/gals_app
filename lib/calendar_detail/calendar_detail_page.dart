@@ -34,7 +34,7 @@ class CalendarDetailPage extends HookConsumerWidget {
         data: (data) {
           return BaseMainPage(
             showAppbar: false,
-            title: '',
+            title: 'GALSカレンダー',
             isSafeArea: true,
             child: SingleChildScrollView(
               child: Column(
