@@ -4,7 +4,6 @@ import 'package:gals_app/mainpage/main_page.dart';
 import 'package:gals_app/news/news_page.dart';
 import 'package:gals_app/setting/setting.dart';
 import 'package:gals_app/util/color.dart';
-import 'package:go_router/go_router.dart';
 
 import 'navigation_icon.dart';
 
@@ -47,16 +46,12 @@ class _GalsNavigationBarState extends State<GalsNavigationBar>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NavigationIcon(
-                name: NavigationItem.news.name,
-                child: NavigationItem.news.icon,
+                name: NavigationItem.home.name,
+                child: NavigationItem.home.icon,
               ),
               NavigationIcon(
                 name: NavigationItem.top.name,
                 child: NavigationItem.top.icon,
-              ),
-              NavigationIcon(
-                name: NavigationItem.home.name,
-                child: NavigationItem.home.icon,
               ),
               NavigationIcon(
                 name: NavigationItem.setting.name,

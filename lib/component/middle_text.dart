@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gals_app/util/color.dart';
 
 class MiddleText extends StatelessWidget {
   const MiddleText({

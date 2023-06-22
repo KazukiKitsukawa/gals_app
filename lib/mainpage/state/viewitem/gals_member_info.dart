@@ -18,6 +18,9 @@ class GalsMemberInfo with _$GalsMemberInfo {
     /// Birthday
     required String birthday,
 
+    /// メンバー紹介文
+    required String synopsys,
+
     /// SNSリスト
     required SnsUrl urls,
   }) = _GalsMemberInfo;
@@ -29,6 +32,7 @@ class GalsMemberInfo with _$GalsMemberInfo {
       memberImage: doc['member_image'] ?? '',
       birthday: doc['birthday'] ?? '',
       memberNum: doc['member_num'] ?? 0,
+      synopsys: doc['synopsys'] ?? '',
       urls: SnsUrl(
           memberTwitterUrl: doc['url']['twitter'] ?? '',
           memberInstagramURL: doc['url']['instagram'] ?? '',

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gals_app/component/large_text.dart';
 import 'package:gals_app/util/color.dart';
 
 class BaseMainPage extends StatelessWidget {
@@ -19,19 +21,27 @@ class BaseMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: showAppbar
-          ? AppBar(
-              backgroundColor: GalsColor.backgroundColor,
-              centerTitle: true,
-              title: Text(title ?? ''),
-              automaticallyImplyLeading: false,
-              elevation: 0,
-            )
-          : null,
-      body: WillPopScope(
-        onWillPop: onWillPop,
-        child: isSafeArea ? SafeArea(child: child) : child,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark
+          .copyWith(systemNavigationBarColor: GalsColor.whiteColor),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: showAppbar
+            ? AppBar(
+                backgroundColor: GalsColor.backgroundColor,
+                centerTitle: true,
+                title: LargeText(
+                  text: title ?? '',
+                  isGoogleFont: true,
+                ),
+                automaticallyImplyLeading: false,
+                elevation: 0,
+              )
+            : null,
+        body: WillPopScope(
+          onWillPop: onWillPop,
+          child: isSafeArea ? SafeArea(child: child) : child,
+        ),
       ),
     );
   }

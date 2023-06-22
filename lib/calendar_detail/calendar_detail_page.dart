@@ -14,7 +14,7 @@ class CalendarDetailPage extends HookConsumerWidget {
       : super(key: key);
 
   static const name = 'calendar_detail';
-  static const path = '/calendar_detail';
+  static const path = 'calendar_detail';
 
   final String calenderItem;
 

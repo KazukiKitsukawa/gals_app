@@ -17,12 +17,17 @@ class BaseTextButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: GalsColor.backgroundColor,
-        elevation: 2,
+        elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(buttonText),
+      child: Text(
+        buttonText,
+        style: TextStyle(
+          color: GalsColor.whiteColor,
+        ),
+      ),
     );
   }
 }

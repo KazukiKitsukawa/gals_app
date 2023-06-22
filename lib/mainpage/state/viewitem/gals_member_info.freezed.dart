@@ -28,6 +28,9 @@ mixin _$GalsMemberInfo {
   /// Birthday
   String get birthday => throw _privateConstructorUsedError;
 
+  /// メンバー紹介文
+  String get synopsys => throw _privateConstructorUsedError;
+
   /// SNSリスト
   SnsUrl get urls => throw _privateConstructorUsedError;
 
@@ -47,6 +50,7 @@ abstract class $GalsMemberInfoCopyWith<$Res> {
       String memberName,
       String memberImage,
       String birthday,
+      String synopsys,
       SnsUrl urls});
 
   $SnsUrlCopyWith<$Res> get urls;
@@ -69,6 +73,7 @@ class _$GalsMemberInfoCopyWithImpl<$Res, $Val extends GalsMemberInfo>
     Object? memberName = null,
     Object? memberImage = null,
     Object? birthday = null,
+    Object? synopsys = null,
     Object? urls = null,
   }) {
     return _then(_value.copyWith(
@@ -87,6 +92,10 @@ class _$GalsMemberInfoCopyWithImpl<$Res, $Val extends GalsMemberInfo>
       birthday: null == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
+              as String,
+      synopsys: null == synopsys
+          ? _value.synopsys
+          : synopsys // ignore: cast_nullable_to_non_nullable
               as String,
       urls: null == urls
           ? _value.urls
@@ -117,6 +126,7 @@ abstract class _$$_GalsMemberInfoCopyWith<$Res>
       String memberName,
       String memberImage,
       String birthday,
+      String synopsys,
       SnsUrl urls});
 
   @override
@@ -138,6 +148,7 @@ class __$$_GalsMemberInfoCopyWithImpl<$Res>
     Object? memberName = null,
     Object? memberImage = null,
     Object? birthday = null,
+    Object? synopsys = null,
     Object? urls = null,
   }) {
     return _then(_$_GalsMemberInfo(
@@ -157,6 +168,10 @@ class __$$_GalsMemberInfoCopyWithImpl<$Res>
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
               as String,
+      synopsys: null == synopsys
+          ? _value.synopsys
+          : synopsys // ignore: cast_nullable_to_non_nullable
+              as String,
       urls: null == urls
           ? _value.urls
           : urls // ignore: cast_nullable_to_non_nullable
@@ -173,6 +188,7 @@ class _$_GalsMemberInfo implements _GalsMemberInfo {
       required this.memberName,
       required this.memberImage,
       required this.birthday,
+      required this.synopsys,
       required this.urls});
 
   /// 優先表示順
@@ -191,13 +207,17 @@ class _$_GalsMemberInfo implements _GalsMemberInfo {
   @override
   final String birthday;
 
+  /// メンバー紹介文
+  @override
+  final String synopsys;
+
   /// SNSリスト
   @override
   final SnsUrl urls;
 
   @override
   String toString() {
-    return 'GalsMemberInfo(memberNum: $memberNum, memberName: $memberName, memberImage: $memberImage, birthday: $birthday, urls: $urls)';
+    return 'GalsMemberInfo(memberNum: $memberNum, memberName: $memberName, memberImage: $memberImage, birthday: $birthday, synopsys: $synopsys, urls: $urls)';
   }
 
   @override
@@ -213,12 +233,14 @@ class _$_GalsMemberInfo implements _GalsMemberInfo {
                 other.memberImage == memberImage) &&
             (identical(other.birthday, birthday) ||
                 other.birthday == birthday) &&
+            (identical(other.synopsys, synopsys) ||
+                other.synopsys == synopsys) &&
             (identical(other.urls, urls) || other.urls == urls));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, memberNum, memberName, memberImage, birthday, urls);
+  int get hashCode => Object.hash(runtimeType, memberNum, memberName,
+      memberImage, birthday, synopsys, urls);
 
   @JsonKey(ignore: true)
   @override
@@ -233,6 +255,7 @@ abstract class _GalsMemberInfo implements GalsMemberInfo {
       required final String memberName,
       required final String memberImage,
       required final String birthday,
+      required final String synopsys,
       required final SnsUrl urls}) = _$_GalsMemberInfo;
 
   @override
@@ -251,6 +274,10 @@ abstract class _GalsMemberInfo implements GalsMemberInfo {
 
   /// Birthday
   String get birthday;
+  @override
+
+  /// メンバー紹介文
+  String get synopsys;
   @override
 
   /// SNSリスト

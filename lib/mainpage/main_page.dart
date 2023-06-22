@@ -2,15 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gals_app/component/base_main_page.dart';
-import 'package:gals_app/component/base_text_button.dart';
 import 'package:gals_app/component/large_text.dart';
-import 'package:gals_app/component/middle_text.dart';
 import 'package:gals_app/component/smail_text.dart';
 import 'package:gals_app/mainpage/gals_string.dart';
+import 'package:gals_app/member_detail/member_detail_page.dart';
 import 'package:gals_app/resources/assets/images.dart';
 import 'package:gals_app/util/color.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'main_page_notifier.dart';
 
@@ -34,18 +33,15 @@ class MainPage extends HookConsumerWidget {
     return BaseMainPage(
       showAppbar: false,
       title: 'test',
-      isSafeArea: true,
+      isSafeArea: false,
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
             flexibleSpace: const FlexibleSpaceBar(
-              background: Hero(
-                tag: 'gals',
-                child: Image(
-                  image: GalsAppAssetImage.artistImage,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+              background: Image(
+                image: GalsAppAssetImage.artistImage,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
             backgroundColor: GalsColor.backgroundColor,
@@ -53,22 +49,23 @@ class MainPage extends HookConsumerWidget {
             floating: false,
             expandedHeight: MediaQuery.of(context).size.height / 4,
           ),
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: LargeText(
+                isGoogleFont: true,
                 text: GalsString.aboutMe,
-                textColor: Color(0xFF000000),
+                textColor: GalsColor.backgroundColor,
                 fontSize: 36,
               ),
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   LargeText(
                     textOverflow: TextOverflow.clip,
                     text: GalsString.galsAbout,
@@ -105,94 +102,79 @@ class MainPage extends HookConsumerWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: LargeText(
-                text: GalsString.memberProfile,
-                textColor: Color(0xFF000000),
-                fontSize: 36,
+          SliverToBoxAdapter(
+            child: Center(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: LargeText(
+                  isGoogleFont: true,
+                  text: GalsString.memberProfile,
+                  textColor: GalsColor.backgroundColor,
+                  fontSize: 36,
+                ),
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(addAutomaticKeepAlives: false,
-                (context, index) {
-              return memberProfile.when(data: (data) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              addAutomaticKeepAlives: true,
+              (context, index) {
+                return memberProfile.when(data: (data) {
+                  return Stack(
+                    alignment: AlignmentDirectional.topCenter,
                     children: [
-                      Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: data[index].memberImage,
-                          ),
-                          Positioned(
-                            top: 0,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: LargeText(
-                                isGoogleFont: true,
-                                text: data[index].memberName,
-                                fontSize: 60,
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: GestureDetector(
+                          child: Hero(
+                            transitionOnUserGestures: true,
+                            tag: data[index].memberImage,
+                            child: CachedNetworkImage(
+                              imageUrl: data[index].memberImage,
                             ),
                           ),
-                        ],
+                          onTap: () {
+                            context.goNamed(MemberDetailPage.name,
+                                extra: data[index]);
+                          },
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BaseTextButton(
-                            onPressed: () {
-                              launchUrl(
-                                  Uri.parse(data[index].urls.memberTwitterUrl));
-                            },
-                            buttonText: GalsString.twitter,
+                      Positioned(
+                        top: 5,
+                        left: 15,
+                        child: Hero(
+                          tag: data[index].memberName,
+                          child: LargeText(
+                            text: data[index].memberName,
+                            isGoogleFont: true,
                           ),
-                          BaseTextButton(
-                              onPressed: () {
-                                launchUrl(Uri.parse(
-                                    data[index].urls.memberInstagramURL));
-                              },
-                              buttonText: GalsString.instagram),
-                          BaseTextButton(
-                              onPressed: () {
-                                launchUrl(
-                                    Uri.parse(data[index].urls.showroomUrl));
-                              },
-                              buttonText: GalsString.showRoom),
-                        ],
-                      ),
-                      MiddleText(
-                        text: GalsString.birthday + data[index].birthday,
-                        textColor: const Color(0xFF000000),
-                        fontSize: 16,
+                        ),
                       ),
                     ],
-                  ),
-                );
-              }, error: (Object error, StackTrace stackTrace) {
-                return null;
-              }, loading: () {
-                return null;
-              });
-            }, childCount: 4),
+                  );
+                }, error: (Object error, StackTrace stackTrace) {
+                  return null;
+                }, loading: () {
+                  return null;
+                });
+              },
+              childCount: 4,
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 0.7,
+              crossAxisCount: 2,
+            ),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 36,
-              width: 36,
+          SliverToBoxAdapter(
+            child: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: MiddleText(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: LargeText(
+                  fontSize: 36,
                   text: 'music',
-                  textColor: Colors.amber,
+                  textColor: GalsColor.backgroundColor,
+                  isGoogleFont: true,
                 ),
               ),
             ),

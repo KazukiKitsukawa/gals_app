@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gals_app/util/color.dart';
 
 class SmailText extends StatelessWidget {
   const SmailText({

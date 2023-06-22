@@ -5,7 +5,6 @@ part 'calendar_item.g.dart';
 
 @freezed
 class CalendarItem with _$CalendarItem {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory CalendarItem({
     /// タイトル(サマリー)
     required String title,

@@ -43,7 +43,7 @@ class CalendarPage extends HookConsumerWidget {
                 );
               },
               error: (error, _) => const SizedBox.shrink(),
-              loading: () => const SizedBox.shrink()),
+              loading: () => const Center(child: CircularProgressIndicator())),
         ),
       ),
     );
