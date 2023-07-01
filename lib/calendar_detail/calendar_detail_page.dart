@@ -10,8 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CalendarDetailPage extends HookConsumerWidget {
-  const CalendarDetailPage({required this.calenderItem, Key? key})
-      : super(key: key);
+  const CalendarDetailPage({required this.calenderItem, Key? key}) : super(key: key);
 
   static const name = 'calendar_detail';
   static const path = 'calendar_detail';
@@ -22,8 +21,7 @@ class CalendarDetailPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final calendarDetail = ref.watch(calenderDetailNotifier.notifier);
 
-    final calendarItem =
-        ref.watch(calenderDetailNotifier.select((value) => value.calenderItem));
+    final calendarItem = ref.watch(calenderDetailNotifier.select((value) => value.calenderItem));
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         calendarDetail.init(calenderItem);
@@ -61,7 +59,9 @@ class CalendarDetailPage extends HookConsumerWidget {
                     child: Html(
                       data: data.description,
                       onLinkTap: (url, _, __, ___) {
-                        launchUrl(Uri.parse(url!));
+                        if (url != null) {
+                          launchUrl(Uri.parse(url));
+                        }
                       },
                     ),
                   ),
@@ -71,12 +71,10 @@ class CalendarDetailPage extends HookConsumerWidget {
                         alignment: Alignment.centerRight,
                         child: IconButton(
                           onPressed: () {
-                            final box =
-                                context.findRenderObject() as RenderBox?;
+                            final box = context.findRenderObject() as RenderBox?;
                             Share.share(
                               data.noHtmlDescription,
-                              sharePositionOrigin:
-                                  box!.localToGlobal(Offset.zero) & box.size,
+                              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                             );
                           },
                           icon: const Icon(Icons.share),

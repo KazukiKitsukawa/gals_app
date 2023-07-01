@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gals_app/calender/calendar_page.dart';
 import 'package:gals_app/mainpage/main_page.dart';
-import 'package:gals_app/news/news_page.dart';
 import 'package:gals_app/setting/setting.dart';
 import 'package:gals_app/util/color.dart';
+import 'package:gals_app/util/font.dart';
 
 import 'navigation_icon.dart';
 
@@ -15,8 +15,7 @@ class GalsNavigationBar extends StatefulWidget {
   State<GalsNavigationBar> createState() => _GalsNavigationBarState();
 }
 
-class _GalsNavigationBarState extends State<GalsNavigationBar>
-    with SingleTickerProviderStateMixin {
+class _GalsNavigationBarState extends State<GalsNavigationBar> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -34,6 +33,7 @@ class _GalsNavigationBarState extends State<GalsNavigationBar>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: GalsColor.whiteColor,
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -47,15 +47,48 @@ class _GalsNavigationBarState extends State<GalsNavigationBar>
             children: [
               NavigationIcon(
                 name: NavigationItem.home.name,
-                child: NavigationItem.home.icon,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    NavigationItem.home.icon,
+                    Text(
+                      NavigationItem.home.text,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: size12,
+                      ),
+                    )
+                  ],
+                ),
               ),
               NavigationIcon(
                 name: NavigationItem.top.name,
-                child: NavigationItem.top.icon,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    NavigationItem.top.icon,
+                    Text(
+                      NavigationItem.top.text,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: size12,
+                      ),
+                    )
+                  ],
+                ),
               ),
               NavigationIcon(
                 name: NavigationItem.setting.name,
-                child: NavigationItem.setting.icon,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    NavigationItem.setting.icon,
+                    Text(
+                      NavigationItem.setting.text,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: size12,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -68,42 +101,32 @@ class _GalsNavigationBarState extends State<GalsNavigationBar>
 }
 
 enum NavigationItem {
-  news(
-    navigationIndex: 1,
-    text: 'news',
-    icon: Icon(
-      Icons.newspaper_outlined,
-      size: 32,
-    ),
-    path: GalsNewsPage.path,
-    name: GalsNewsPage.name,
-  ),
   home(
-    navigationIndex: 2,
+    navigationIndex: 1,
     text: 'ホーム',
     icon: Icon(
       Icons.home,
-      size: 32,
+      size: 28,
     ),
     path: MainPage.path,
     name: MainPage.name,
   ),
   top(
-    navigationIndex: 3,
-    text: 'Calendar',
+    navigationIndex: 2,
+    text: 'カレンダー',
     icon: Icon(
       Icons.calendar_month,
-      size: 32,
+      size: 28,
     ),
     path: CalendarPage.path,
     name: CalendarPage.name,
   ),
   setting(
-    navigationIndex: 4,
-    text: 'setting',
+    navigationIndex: 3,
+    text: '設定',
     icon: Icon(
       Icons.settings,
-      size: 32,
+      size: 28,
     ),
     path: Setting.path,
     name: Setting.name,

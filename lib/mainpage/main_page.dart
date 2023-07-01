@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gals_app/component/base_main_page.dart';
-import 'package:gals_app/component/large_text.dart';
-import 'package:gals_app/component/smail_text.dart';
 import 'package:gals_app/mainpage/gals_string.dart';
 import 'package:gals_app/member_detail/member_detail_page.dart';
 import 'package:gals_app/resources/assets/images.dart';
 import 'package:gals_app/util/color.dart';
+import 'package:gals_app/util/font.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'main_page_notifier.dart';
+import 'package:gals_app/mainpage/main_page_notifier.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends HookConsumerWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -22,8 +23,8 @@ class MainPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainPage = ref.watch(mainPageNotifier.notifier);
-    final memberProfile =
-        ref.watch(mainPageNotifier.select((value) => value.galsMemberInfo));
+    final songList = ref.watch(mainPageNotifier.select((value) => value.galsMusicList));
+    final memberProfile = ref.watch(mainPageNotifier.select((value) => value.galsMemberInfo));
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         mainPage.init();
@@ -35,6 +36,7 @@ class MainPage extends HookConsumerWidget {
       title: 'test',
       isSafeArea: false,
       child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           SliverAppBar(
             flexibleSpace: const FlexibleSpaceBar(
@@ -44,58 +46,67 @@ class MainPage extends HookConsumerWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            backgroundColor: GalsColor.backgroundColor,
             automaticallyImplyLeading: false,
-            floating: false,
             expandedHeight: MediaQuery.of(context).size.height / 4,
+            backgroundColor: GalsColor.whiteColor,
           ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: LargeText(
-                isGoogleFont: true,
-                text: GalsString.aboutMe,
-                textColor: GalsColor.backgroundColor,
-                fontSize: 36,
+              child: Text(
+                GalsString.aboutMe,
+                style: UseGoogleFont.lemon.style.copyWith(color: GalsColor.backgroundColor, fontSize: size36),
               ),
             ),
           ),
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LargeText(
-                    textOverflow: TextOverflow.clip,
-                    text: GalsString.galsAbout,
-                    textColor: Color(0xFF000000),
-                    fontSize: 16,
-                    spacingHeight: 1.5,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: SmailText(
-                      textOverflow: TextOverflow.clip,
-                      text: GalsString.galsAboutSmallText,
-                      textColor: Color(0xFF000000),
+                  Text(
+                    GalsString.galsAbout,
+                    style: UseGoogleFont.zenKaku.style.copyWith(
+                      fontSize: size16,
+                      color: GalsColor.blackColor,
+                      height: spacing1half,
+                      overflow: clip,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: LargeText(
-                      textOverflow: TextOverflow.clip,
-                      text: GalsString.lunaGreetText,
-                      textColor: Color(0xFF000000),
-                      fontSize: 16,
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      GalsString.galsAboutSmallText,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: size12,
+                        color: GalsColor.blackColor,
+                        overflow: clip,
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: SmailText(
-                      textOverflow: TextOverflow.clip,
-                      text: GalsString.lunaGreetSmallText,
-                      textColor: Color(0xFF000000),
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      GalsString.lunaGreetText,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: size16,
+                        color: GalsColor.blackColor,
+                        overflow: clip,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      GalsString.lunaGreetSmallText,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: 12,
+                        overflow: clip,
+                        color: GalsColor.blackColor,
+                      ),
                     ),
                   ),
                 ],
@@ -105,13 +116,13 @@ class MainPage extends HookConsumerWidget {
           SliverToBoxAdapter(
             child: Center(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: LargeText(
-                  isGoogleFont: true,
-                  text: GalsString.memberProfile,
-                  textColor: GalsColor.backgroundColor,
-                  fontSize: 36,
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: Text(
+                  GalsString.memberProfile,
+                  style: UseGoogleFont.lemon.style.copyWith(
+                    color: GalsColor.backgroundColor,
+                    fontSize: size36,
+                  ),
                 ),
               ),
             ),
@@ -135,8 +146,7 @@ class MainPage extends HookConsumerWidget {
                             ),
                           ),
                           onTap: () {
-                            context.goNamed(MemberDetailPage.name,
-                                extra: data[index]);
+                            context.goNamed(MemberDetailPage.name, extra: data[index]);
                           },
                         ),
                       ),
@@ -145,9 +155,12 @@ class MainPage extends HookConsumerWidget {
                         left: 15,
                         child: Hero(
                           tag: data[index].memberName,
-                          child: LargeText(
-                            text: data[index].memberName,
-                            isGoogleFont: true,
+                          child: Text(
+                            data[index].memberName,
+                            style: UseGoogleFont.lemon.style.copyWith(
+                              color: GalsColor.whiteColor,
+                              fontSize: size24,
+                            ),
                           ),
                         ),
                       ),
@@ -156,7 +169,11 @@ class MainPage extends HookConsumerWidget {
                 }, error: (Object error, StackTrace stackTrace) {
                   return null;
                 }, loading: () {
-                  return null;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: GalsColor.backgroundColor,
+                    ),
+                  );
                 });
               },
               childCount: 4,
@@ -170,12 +187,232 @@ class MainPage extends HookConsumerWidget {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: LargeText(
-                  fontSize: 36,
-                  text: 'music',
-                  textColor: GalsColor.backgroundColor,
-                  isGoogleFont: true,
+                child: Text(
+                  GalsString.music,
+                  style: UseGoogleFont.lemon.style.copyWith(
+                    color: GalsColor.backgroundColor,
+                    fontSize: size36,
+                  ),
                 ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: songList.when(
+              data: (data) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Column(
+                    children: [
+                      CarouselSlider.builder(
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index, _) {
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: GestureDetector(
+                                  child: CachedNetworkImage(
+                                    fadeInDuration: const Duration(milliseconds: 100),
+                                    imageUrl: data[index].imageUrl,
+                                  ),
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(16),
+                                            decoration: BoxDecoration(
+                                              color: GalsColor.whiteColor,
+                                              borderRadius: const BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                            ),
+                                            height: 600,
+                                            child: SingleChildScrollView(
+                                              physics: const ClampingScrollPhysics(),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: data[index].imageUrl,
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(vertical: 4),
+                                                        child: Text(
+                                                          data[index].title,
+                                                          style: UseGoogleFont.zenKaku.style.copyWith(
+                                                            fontSize: size16,
+                                                            color: GalsColor.backgroundColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        onPressed: () {
+                                                          launchUrl(Uri.parse(data[index].url));
+                                                        },
+                                                        icon: const FaIcon(
+                                                          FontAwesomeIcons.music,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                                    child: Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        '発売日：${data[index].releaseDate}',
+                                                        style: UseGoogleFont.zenKaku.style.copyWith(
+                                                          fontSize: size16,
+                                                          color: GalsColor.backgroundColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  for (int i = 0; i < data[index].songList.length; i++) ...{
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(bottom: 4),
+                                                      child: Text(
+                                                        textAlign: TextAlign.start,
+                                                        '${i + 1}.${data[index].songList[i]}',
+                                                        style: UseGoogleFont.zenKaku.style.copyWith(
+                                                          fontSize: size12,
+                                                          color: GalsColor.backgroundColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  },
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                  data[index].title,
+                                  style: UseGoogleFont.zenKaku.style.copyWith(
+                                    fontSize: size12,
+                                    color: GalsColor.backgroundColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        options: CarouselOptions(
+                          disableCenter: true,
+                          pageSnapping: false,
+                          padEnds: false,
+                          viewportFraction: 0.5,
+                          initialPage: 0,
+                          enableInfiniteScroll: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              error: (_, __) {
+                return const SizedBox.shrink();
+              },
+              loading: () => Center(
+                child: CircularProgressIndicator(
+                  color: GalsColor.backgroundColor,
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Column(
+                children: [
+                  Text(
+                    GalsString.other,
+                    style: UseGoogleFont.lemon.style.copyWith(
+                      color: GalsColor.backgroundColor,
+                      fontSize: size36,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(GalsColor.backgroundColor),
+                          ),
+                          onPressed: () {
+                            launchUrl(Uri.parse('https://twitter.com/gals__official'));
+                          },
+                          child: SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.twitter,
+                                  size: 32,
+                                  color: GalsColor.whiteColor,
+                                ),
+                                const Image(
+                                  width: 100,
+                                  height: 36,
+                                  image: GalsAppAssetImage.splashPicture,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(GalsColor.backgroundColor),
+                          ),
+                          onPressed: () {
+                            launchUrl(Uri.parse('https://gals-id.myshopify.com/'));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                height: 50,
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 8),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: FaIcon(
+                                      FontAwesomeIcons.shopify,
+                                      size: 32,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                GalsString.shopify,
+                                style: UseGoogleFont.lemon.style.copyWith(fontSize: size16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           )

@@ -189,8 +189,7 @@ class __$$_CalendarItemCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 class _$_CalendarItem implements _CalendarItem {
   const _$_CalendarItem(
       {required this.title,

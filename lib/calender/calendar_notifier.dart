@@ -1,23 +1,24 @@
+import 'dart:async';
+
 import 'package:gals_app/calender/domain/calendar_service.dart';
 import 'package:gals_app/calender/state/calendar_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final calenderNotifier =
-    StateNotifierProvider.autoDispose<CalendarNotifier, CalendarState>((ref) {
-  return CalendarNotifier(service: ref.read(calendarService));
-});
+final calenderNotifier = NotifierProvider<CalendarNotifier, CalendarState>(CalendarNotifier.new);
 
-class CalendarNotifier extends StateNotifier<CalendarState> {
-  CalendarNotifier({required CalendarService service})
-      : _calenderService = service,
-        super(const CalendarState());
-
-  final CalendarService _calenderService;
-
+class CalendarNotifier extends Notifier<CalendarState> {
   /// 初回起動画面
+  @override
+  CalendarState build() {
+    return const CalendarState();
+  }
+
   Future<void> init() async {
+    final CalendarService calenderService = ref.read(calendarService);
     state = state.copyWith(
-        calenderItem:
-            AsyncValue.data(await _calenderService.fetchCalendarItems()));
+      calenderItem: await AsyncValue.guard(
+        () => calenderService.fetchCalendarItems(),
+      ),
+    );
   }
 }

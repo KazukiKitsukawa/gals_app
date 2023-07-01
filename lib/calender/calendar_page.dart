@@ -2,48 +2,65 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gals_app/calendar_detail/calendar_detail_page.dart';
 import 'package:gals_app/calender/calendar_notifier.dart';
 import 'package:gals_app/calender/state/viewitem/calendar_item.dart';
 import 'package:gals_app/component/base_main_page.dart';
+import 'package:gals_app/resources/assets/images.dart';
 import 'package:gals_app/util/color.dart';
+import 'package:gals_app/util/font.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarPage extends HookConsumerWidget {
+class CalendarPage extends StatefulHookConsumerWidget {
   const CalendarPage({Key? key}) : super(key: key);
   static const String name = 'calendarPage';
   static const String path = '/calendarPage';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final calendar = ref.watch(calenderNotifier.notifier);
-    final calendarItem =
-        ref.watch(calenderNotifier.select((value) => value.calenderItem));
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        calendar.init();
-      });
-      return null;
-    }, []);
+  ConsumerState<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends ConsumerState<CalendarPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.watch(calenderNotifier.notifier).init();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final calendarItem = ref.watch(calenderNotifier.select((value) => value.calenderItem));
     return BaseMainPage(
       showAppbar: false,
       title: '',
       isSafeArea: true,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SizedBox(
-          child: calendarItem.when(
-              data: (data) {
-                return CalendarBody(
-                  calendarItem: data,
-                );
-              },
-              error: (error, _) => const SizedBox.shrink(),
-              loading: () => const Center(child: CircularProgressIndicator())),
+      child: SizedBox(
+        child: calendarItem.when(
+          data: (data) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: CalendarBody(
+                calendarItem: data,
+              ),
+            );
+          },
+          error: (error, _) => ElevatedButton(
+            onPressed: () {},
+            child: Container(
+              color: Colors.green,
+            ),
+          ),
+          loading: () => Center(
+            child: Image(
+              color: GalsColor.backgroundColor,
+              image: GalsAppAssetImage.gImage,
+            ),
+          ),
         ),
       ),
     );
@@ -145,10 +162,11 @@ class _CalendarBodyState extends State<CalendarBody> {
             ),
           ),
           headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-              leftChevronVisible: false,
-              rightChevronVisible: false),
+            formatButtonVisible: false,
+            titleCentered: true,
+            leftChevronVisible: false,
+            rightChevronVisible: false,
+          ),
           onPageChanged: (focusedDay) {
             _focusedDay = focusedDay;
           },
@@ -156,14 +174,13 @@ class _CalendarBodyState extends State<CalendarBody> {
           calendarBuilders: CalendarBuilders(
             dowBuilder: (context, day) {
               const locale = 'ja_JP';
-              final dowText = const DaysOfWeekStyle()
-                      .dowTextFormatter
-                      ?.call(day, 'ja_JP') ??
-                  DateFormat.E(locale).format(day);
+              final dowText =
+                  const DaysOfWeekStyle().dowTextFormatter?.call(day, 'ja_JP') ?? DateFormat.E(locale).format(day);
               return Center(
                 child: Text(
                   dowText,
-                  style: TextStyle(
+                  style: UseGoogleFont.zenKaku.style.copyWith(
+                    fontSize: size14,
                     color: headerTextColor(day),
                   ),
                 ),
@@ -177,27 +194,28 @@ class _CalendarBodyState extends State<CalendarBody> {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: getEvent(_selectedDay!)
-                .map((e) => Container(
-                      decoration: const BoxDecoration(
-                          color: Color(0x6974b3d2),
-                          border:
-                              Border(bottom: BorderSide(color: Colors.white))),
-                      child: ListTile(
-                        title: Text(
-                          e.toString(),
-                        ),
-                        onTap: () {
-                          final calendarListItem = widget.calendarItem
-                              .firstWhere(
-                                  (element) => element.title == e.toString());
-                          context.pushNamed(CalendarDetailPage.name,
-                              queryParams: {
-                                'calendarItem':
-                                    jsonEncode(calendarListItem.toJson())
-                              });
-                        },
+                .map(
+                  (e) => Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0x6974b3d2),
+                      border: Border(
+                        bottom: BorderSide(color: Colors.white),
                       ),
-                    ))
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        e.toString(),
+                        style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size14),
+                      ),
+                      onTap: () {
+                        final calendarListItem =
+                            widget.calendarItem.firstWhere((element) => element.title == e.toString());
+                        context.pushNamed(CalendarDetailPage.name,
+                            queryParams: {'calendarItem': jsonEncode(calendarListItem.toJson())});
+                      },
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ),

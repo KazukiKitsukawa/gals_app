@@ -5,8 +5,7 @@ class GalsAppAssetImage {
   static const AssetImage splashPicture = AssetImage('images/gals.png');
 
   /// アーティスト写真
-  static const AssetImage artistImage =
-      AssetImage('images/artist_picture.jpeg');
+  static const AssetImage artistImage = AssetImage('images/artist_picture.jpeg');
 
   /// LUNA画像
   static const AssetImage lunaImage = AssetImage('images/luna.jpeg');
@@ -19,4 +18,6 @@ class GalsAppAssetImage {
 
   /// RAMU画像
   static const AssetImage ramuImage = AssetImage('images/ramu.jpeg');
+
+  static const AssetImage gImage = AssetImage('images/g.png');
 }

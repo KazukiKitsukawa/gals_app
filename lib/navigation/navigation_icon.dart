@@ -4,22 +4,22 @@ import 'package:go_router/go_router.dart';
 class NavigationIcon extends StatelessWidget {
   const NavigationIcon({
     super.key,
-    required this.name,
-    required this.child,
-  });
+    required String name,
+    required Widget child,
+  })  : _child = child,
+        _name = name;
 
-  final String name;
-  final Widget child;
+  final String _name;
+  final Widget _child;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       child: SizedBox(
-        height: 36,
-        width: 36,
+        width: 70,
         child: GestureDetector(
-          onTap: () => context.goNamed(name),
-          child: child,
+          onTap: () => context.goNamed(_name),
+          child: _child,
         ),
       ),
     );

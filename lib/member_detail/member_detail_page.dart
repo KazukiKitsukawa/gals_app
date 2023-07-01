@@ -2,14 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gals_app/component/base_main_page.dart';
-import 'package:gals_app/component/large_text.dart';
-import 'package:gals_app/component/smail_text.dart';
 import 'package:gals_app/mainpage/state/viewitem/gals_member_info.dart';
 import 'package:gals_app/util/color.dart';
+import 'package:gals_app/util/font.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MemberDetailPage extends StatelessWidget {
+class MemberDetailPage extends StatefulWidget {
   const MemberDetailPage({
     required this.memberInfo,
     Key? key,
@@ -21,106 +20,141 @@ class MemberDetailPage extends StatelessWidget {
   final GalsMemberInfo memberInfo;
 
   @override
+  State<MemberDetailPage> createState() => _MemberDetailPageState();
+}
+
+class _MemberDetailPageState extends State<MemberDetailPage> {
+  double dragOffset = 0.0;
+  bool isChangeWidget = false;
+  @override
   Widget build(BuildContext context) {
-    return BaseMainPage(
-      showAppbar: false,
-      isSafeArea: false,
-      child: Container(
-        color: GalsColor.whiteColor,
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (details.delta.dx > 0) {
+          setState(() {
+            dragOffset += details.delta.dx;
+          });
+        }
+      },
+      onHorizontalDragEnd: (details) {
+        if (dragOffset.abs() > 100) {
+          setState(() {
+            dragOffset = 0.0;
+          });
+          context.pop();
+        } else {
+          setState(() {
+            dragOffset = 0.0;
+          });
+        }
+        // スワイプ終了時に実行する処理
+      },
+      child: Transform.translate(
+        offset: Offset(dragOffset, 0),
+        child: BaseMainPage(
+          showAppbar: false,
+          isSafeArea: false,
+          child: Container(
+            color: GalsColor.whiteColor,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(
-                    tag: memberInfo.memberImage,
-                    child: CachedNetworkImage(
-                      imageUrl: memberInfo.memberImage,
+                  Stack(
+                    children: [
+                      Hero(
+                        tag: widget.memberInfo.memberImage,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.memberInfo.memberImage,
+                        ),
+                      ),
+                      Positioned(
+                        top: 50,
+                        left: 0,
+                        child: IconButton(
+                          color: GalsColor.whiteColor,
+                          onPressed: () {
+                            context.pop();
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Hero(
+                            tag: widget.memberInfo,
+                            child: Text(
+                              widget.memberInfo.memberName,
+                              style: UseGoogleFont.lemon.style.copyWith(
+                                color: GalsColor.backgroundColor,
+                                fontSize: size36,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          widget.memberInfo.synopsys.replaceAll('\\n', '\n'),
+                          style: UseGoogleFont.zenKaku.style.copyWith(
+                            color: GalsColor.backgroundColor,
+                            overflow: TextOverflow.clip,
+                            fontSize: size14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '誕生日：${widget.memberInfo.birthday}',
+                            style: UseGoogleFont.zenKaku.style.copyWith(
+                              color: GalsColor.backgroundColor,
+                              fontSize: size14,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Positioned(
-                    top: 50,
-                    left: 0,
-                    child: IconButton(
-                      color: GalsColor.whiteColor,
-                      onPressed: () {
-                        context.pop();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 28,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SnsIconButton(
+                          snsIcon: FontAwesomeIcons.twitter,
+                          text: 'Twitter',
+                          onTap: () => launchUrl(
+                            Uri.parse(widget.memberInfo.urls.memberTwitterUrl),
+                          ),
+                        ),
+                        SnsIconButton(
+                          snsIcon: FontAwesomeIcons.instagram,
+                          text: 'Instagram',
+                          onTap: () => launchUrl(
+                            Uri.parse(widget.memberInfo.urls.memberInstagramURL),
+                          ),
+                        ),
+                        SnsIconButton(
+                          snsIcon: FontAwesomeIcons.s,
+                          text: 'SHOWROOM',
+                          onTap: () => launchUrl(
+                            Uri.parse(widget.memberInfo.urls.showroomUrl),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Hero(
-                        tag: memberInfo,
-                        child: LargeText(
-                          text: memberInfo.memberName,
-                          textColor: GalsColor.backgroundColor,
-                          isGoogleFont: true,
-                          fontSize: 36,
-                        ),
-                      ),
-                    ),
-                    LargeText(
-                      textOverflow: TextOverflow.clip,
-                      text: memberInfo.synopsys.replaceAll('\\n', '\n'),
-                      textColor: GalsColor.backgroundColor,
-                      isGoogleFont: true,
-                      fontSize: 16,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: LargeText(
-                        text: '誕生日：${memberInfo.birthday}',
-                        textColor: GalsColor.backgroundColor,
-                        isGoogleFont: true,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SnsIconButton(
-                      snsIcon: FontAwesomeIcons.twitter,
-                      text: 'Twitter',
-                      onTap: () => launchUrl(
-                        Uri.parse(memberInfo.urls.memberTwitterUrl),
-                      ),
-                    ),
-                    SnsIconButton(
-                      snsIcon: FontAwesomeIcons.instagram,
-                      text: 'Instagram',
-                      onTap: () => launchUrl(
-                        Uri.parse(memberInfo.urls.memberInstagramURL),
-                      ),
-                    ),
-                    SnsIconButton(
-                      snsIcon: FontAwesomeIcons.s,
-                      text: 'SHOWROOM',
-                      onTap: () => launchUrl(
-                        Uri.parse(memberInfo.urls.showroomUrl),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -160,9 +194,11 @@ class SnsIconButton extends StatelessWidget {
           ),
           Positioned(
             bottom: 5,
-            child: SmailText(
-              text: text,
-              textColor: GalsColor.backgroundColor,
+            child: Text(
+              text,
+              style: UseGoogleFont.zenKaku.style.copyWith(
+                color: GalsColor.backgroundColor,
+              ),
             ),
           ),
         ],

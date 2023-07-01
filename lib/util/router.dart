@@ -6,14 +6,14 @@ import 'package:gals_app/mainpage/state/viewitem/gals_member_info.dart';
 import 'package:gals_app/member_detail/member_detail_page.dart';
 import 'package:gals_app/navigation/gals_navigation_bar.dart';
 import 'package:gals_app/setting/setting.dart';
+import 'package:gals_app/setting/setting_page/app_version.dart';
+import 'package:gals_app/setting/setting_page/privacy_policy.dart';
 import 'package:gals_app/splash/page/splash_page.dart';
 import 'package:go_router/go_router.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shell');
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 final router = GoRouter(
   debugLogDiagnostics: true,
@@ -46,9 +46,9 @@ final router = GoRouter(
               GoRoute(
                 name: MemberDetailPage.name,
                 path: MemberDetailPage.path,
+                parentNavigatorKey: _rootNavigatorKey,
                 pageBuilder: (context, state) {
-                  final GalsMemberInfo memberInfo =
-                      state.extra as GalsMemberInfo;
+                  final GalsMemberInfo memberInfo = state.extra as GalsMemberInfo;
                   return MaterialPage(
                     fullscreenDialog: true,
                     key: state.pageKey,
@@ -71,8 +71,7 @@ final router = GoRouter(
                 name: CalendarDetailPage.name,
                 path: CalendarDetailPage.path,
                 pageBuilder: (context, state) {
-                  final String calendarListItem =
-                      state.queryParams['calendarItem'] ?? '';
+                  final String calendarListItem = state.queryParams['calendarItem'] ?? '';
                   return MaterialPage(
                     key: state.pageKey,
                     child: CalendarDetailPage(
@@ -89,6 +88,24 @@ final router = GoRouter(
             key: state.pageKey,
             child: const Setting(),
           ),
+          routes: [
+            GoRoute(
+              name: PrivacyPolicyPage.name,
+              path: PrivacyPolicyPage.path,
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: const PrivacyPolicyPage(),
+              ),
+            ),
+            GoRoute(
+              name: AppVersion.name,
+              path: AppVersion.path,
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: const AppVersion(),
+              ),
+            ),
+          ],
         ),
       ],
     ),

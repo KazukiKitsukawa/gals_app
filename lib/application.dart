@@ -8,6 +8,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       locale: const Locale('ja'),
       localizationsDelegates: const [
         DefaultMaterialLocalizations.delegate,

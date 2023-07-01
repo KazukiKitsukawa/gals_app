@@ -63,11 +63,7 @@ class CalendarRepository {
     return galsCalendarItemList;
   }
 
-  Map<DateTime, List> replaceDate(
-    DateTime startDate,
-    String title,
-  ) =>
-      {
+  Map<DateTime, List> replaceDate(DateTime startDate, String title) => {
         startDate: [title]
       };
 }

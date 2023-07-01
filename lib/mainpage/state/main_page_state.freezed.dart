@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MainPageState {
 // メンバー情報
   AsyncValue<List<GalsMemberInfo>> get galsMemberInfo =>
+      throw _privateConstructorUsedError; // 音楽情報
+  AsyncValue<List<GalsMusicList>> get galsMusicList =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +33,9 @@ abstract class $MainPageStateCopyWith<$Res> {
           MainPageState value, $Res Function(MainPageState) then) =
       _$MainPageStateCopyWithImpl<$Res, MainPageState>;
   @useResult
-  $Res call({AsyncValue<List<GalsMemberInfo>> galsMemberInfo});
+  $Res call(
+      {AsyncValue<List<GalsMemberInfo>> galsMemberInfo,
+      AsyncValue<List<GalsMusicList>> galsMusicList});
 }
 
 /// @nodoc
@@ -48,12 +52,17 @@ class _$MainPageStateCopyWithImpl<$Res, $Val extends MainPageState>
   @override
   $Res call({
     Object? galsMemberInfo = null,
+    Object? galsMusicList = null,
   }) {
     return _then(_value.copyWith(
       galsMemberInfo: null == galsMemberInfo
           ? _value.galsMemberInfo
           : galsMemberInfo // ignore: cast_nullable_to_non_nullable
               as AsyncValue<List<GalsMemberInfo>>,
+      galsMusicList: null == galsMusicList
+          ? _value.galsMusicList
+          : galsMusicList // ignore: cast_nullable_to_non_nullable
+              as AsyncValue<List<GalsMusicList>>,
     ) as $Val);
   }
 }
@@ -66,7 +75,9 @@ abstract class _$$_MainPageStateCopyWith<$Res>
       __$$_MainPageStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AsyncValue<List<GalsMemberInfo>> galsMemberInfo});
+  $Res call(
+      {AsyncValue<List<GalsMemberInfo>> galsMemberInfo,
+      AsyncValue<List<GalsMusicList>> galsMusicList});
 }
 
 /// @nodoc
@@ -81,12 +92,17 @@ class __$$_MainPageStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? galsMemberInfo = null,
+    Object? galsMusicList = null,
   }) {
     return _then(_$_MainPageState(
       galsMemberInfo: null == galsMemberInfo
           ? _value.galsMemberInfo
           : galsMemberInfo // ignore: cast_nullable_to_non_nullable
               as AsyncValue<List<GalsMemberInfo>>,
+      galsMusicList: null == galsMusicList
+          ? _value.galsMusicList
+          : galsMusicList // ignore: cast_nullable_to_non_nullable
+              as AsyncValue<List<GalsMusicList>>,
     ));
   }
 }
@@ -94,16 +110,22 @@ class __$$_MainPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_MainPageState implements _MainPageState {
-  const _$_MainPageState({this.galsMemberInfo = const AsyncValue.loading()});
+  const _$_MainPageState(
+      {this.galsMemberInfo = const AsyncValue.loading(),
+      this.galsMusicList = const AsyncValue.loading()});
 
 // メンバー情報
   @override
   @JsonKey()
   final AsyncValue<List<GalsMemberInfo>> galsMemberInfo;
+// 音楽情報
+  @override
+  @JsonKey()
+  final AsyncValue<List<GalsMusicList>> galsMusicList;
 
   @override
   String toString() {
-    return 'MainPageState(galsMemberInfo: $galsMemberInfo)';
+    return 'MainPageState(galsMemberInfo: $galsMemberInfo, galsMusicList: $galsMusicList)';
   }
 
   @override
@@ -112,11 +134,13 @@ class _$_MainPageState implements _MainPageState {
         (other.runtimeType == runtimeType &&
             other is _$_MainPageState &&
             (identical(other.galsMemberInfo, galsMemberInfo) ||
-                other.galsMemberInfo == galsMemberInfo));
+                other.galsMemberInfo == galsMemberInfo) &&
+            (identical(other.galsMusicList, galsMusicList) ||
+                other.galsMusicList == galsMusicList));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, galsMemberInfo);
+  int get hashCode => Object.hash(runtimeType, galsMemberInfo, galsMusicList);
 
   @JsonKey(ignore: true)
   @override
@@ -127,11 +151,13 @@ class _$_MainPageState implements _MainPageState {
 
 abstract class _MainPageState implements MainPageState {
   const factory _MainPageState(
-          {final AsyncValue<List<GalsMemberInfo>> galsMemberInfo}) =
-      _$_MainPageState;
+      {final AsyncValue<List<GalsMemberInfo>> galsMemberInfo,
+      final AsyncValue<List<GalsMusicList>> galsMusicList}) = _$_MainPageState;
 
   @override // メンバー情報
   AsyncValue<List<GalsMemberInfo>> get galsMemberInfo;
+  @override // 音楽情報
+  AsyncValue<List<GalsMusicList>> get galsMusicList;
   @override
   @JsonKey(ignore: true)
   _$$_MainPageStateCopyWith<_$_MainPageState> get copyWith =>

@@ -27,26 +27,26 @@ class CalendarDetailRepository {
         .replaceAll('&lt;', '<')
         .replaceAll('&gt;', '>');
     final excludeUrlDescription = excludeUrl(calendarDescription);
-    return excludeUrlDescription;
+
+    final urlDescription = '$excludeUrlDescription \n ${getUrl(description)}';
+    return urlDescription;
   }
 
   ///
   /// チケットのURL除外
   ///
-  String excludeUrl(String description) =>
-      description.replaceAll('🎟', '').replaceAll(
-          RegExp(
-              r"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?"),
-          "");
+  String excludeUrl(String description) => description
+      .replaceAll('🎟', '')
+      .replaceAll(RegExp(r"(http|ftp|https)://([\w_-]+)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?"), "");
 
   ///
   /// タグを外したHTMLからURLを取得
   ///
   String getUrl(String description) {
     String url = '';
-    RegExp _regExp = RegExp(r'https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=#]*)?');
-    Iterable<RegExpMatch> _matches = _regExp.allMatches(description);
-    for (RegExpMatch regExpMatch in _matches) {
+    RegExp regExp = RegExp(r'https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=#]*)?');
+    Iterable<RegExpMatch> matches = regExp.allMatches(description);
+    for (RegExpMatch regExpMatch in matches) {
       url = description.substring(regExpMatch.start, regExpMatch.end);
     }
     return url;
