@@ -8,7 +8,7 @@ class GalsDio {
     dio.options.connectTimeout = GalsDioItem().connectTime;
     dio.options.receiveTimeout = GalsDioItem().receiveTime;
     dio.options.headers = {'content-type': 'text/html;charset=UTF-8'};
-    dio.interceptors.add(LogInterceptor());
+    // dio.interceptors.add(LogInterceptor());
     return dio;
   }
 }

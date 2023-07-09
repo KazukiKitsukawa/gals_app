@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gals_app/util/color.dart';
 import 'package:gals_app/util/router.dart';
 
 class Application extends StatelessWidget {
@@ -8,6 +9,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      color: GalsColor.backgroundColor,
       debugShowCheckedModeBanner: false,
       locale: const Locale('ja'),
       localizationsDelegates: const [
@@ -18,9 +20,7 @@ class Application extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ),
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
+      routerConfig: router,
     );
   }
 }

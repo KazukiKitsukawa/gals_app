@@ -3,6 +3,7 @@ import 'package:gals_app/component/base_main_page.dart';
 import 'package:gals_app/component/setting_list.dart';
 import 'package:gals_app/resources/assets/images.dart';
 import 'package:gals_app/setting/setting_page/app_version.dart';
+import 'package:gals_app/setting/setting_page/license_page.dart';
 import 'package:gals_app/setting/setting_page/privacy_policy.dart';
 import 'package:gals_app/util/color.dart';
 import 'package:gals_app/util/font.dart';
@@ -41,6 +42,13 @@ class _SettingState extends State<Setting> {
               const SettingListTile(
                 name: PrivacyPolicyPage.name,
                 settingText: 'プライバシーポリシー',
+              ),
+              Divider(
+                color: GalsColor.backgroundColor,
+              ),
+              const SettingListTile(
+                name: CustomLicensePage.name,
+                settingText: 'ライセンスページ',
               ),
               Divider(
                 color: GalsColor.backgroundColor,

@@ -11,7 +11,7 @@ class BaseMainPage extends StatelessWidget {
     this.title = '',
     this.onWillPop,
     this.onPop = false,
-    required this.isSafeArea,
+    this.isSafeArea = false,
   }) : super(key: key);
 
   final bool showAppbar;

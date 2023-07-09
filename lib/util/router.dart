@@ -7,8 +7,10 @@ import 'package:gals_app/member_detail/member_detail_page.dart';
 import 'package:gals_app/navigation/gals_navigation_bar.dart';
 import 'package:gals_app/setting/setting.dart';
 import 'package:gals_app/setting/setting_page/app_version.dart';
+import 'package:gals_app/setting/setting_page/license_page.dart';
 import 'package:gals_app/setting/setting_page/privacy_policy.dart';
 import 'package:gals_app/splash/page/splash_page.dart';
+import 'package:gals_app/thankyou_page/thankyou_gals_page.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -24,7 +26,11 @@ final router = GoRouter(
     GoRoute(
       name: SplashPage.name,
       path: SplashPage.path,
-      builder: (context, state) => const SplashPage(),
+      pageBuilder: (context, state) {
+        return const MaterialPage(
+          child: SplashPage(),
+        );
+      },
     ),
     // タブありの場合
     ShellRoute(
@@ -36,9 +42,16 @@ final router = GoRouter(
       },
       routes: [
         GoRoute(
+          path: ThankYouGalsPage.path,
+          name: ThankYouGalsPage.name,
+          pageBuilder: (context, state) => const MaterialPage(
+            child: ThankYouGalsPage(),
+          ),
+        ),
+        GoRoute(
             name: MainPage.name,
             path: MainPage.path,
-            pageBuilder: (context, state) => NoTransitionPage(
+            pageBuilder: (context, state) => MaterialPage(
                   key: state.pageKey,
                   child: const MainPage(),
                 ),
@@ -60,27 +73,28 @@ final router = GoRouter(
               ),
             ]),
         GoRoute(
-            name: CalendarPage.name,
-            path: CalendarPage.path,
-            pageBuilder: (context, state) => NoTransitionPage(
+          name: CalendarPage.name,
+          path: CalendarPage.path,
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const CalendarPage(),
+          ),
+          routes: [
+            GoRoute(
+              name: CalendarDetailPage.name,
+              path: CalendarDetailPage.path,
+              pageBuilder: (context, state) {
+                final String calendarListItem = state.queryParams['calendarItem'] ?? '';
+                return MaterialPage(
                   key: state.pageKey,
-                  child: const CalendarPage(),
-                ),
-            routes: [
-              GoRoute(
-                name: CalendarDetailPage.name,
-                path: CalendarDetailPage.path,
-                pageBuilder: (context, state) {
-                  final String calendarListItem = state.queryParams['calendarItem'] ?? '';
-                  return MaterialPage(
-                    key: state.pageKey,
-                    child: CalendarDetailPage(
-                      calenderItem: calendarListItem,
-                    ),
-                  );
-                },
-              ),
-            ]),
+                  child: CalendarDetailPage(
+                    calenderItem: calendarListItem,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
         GoRoute(
           name: Setting.name,
           path: Setting.path,
@@ -103,6 +117,14 @@ final router = GoRouter(
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: const AppVersion(),
+              ),
+            ),
+            GoRoute(
+              name: CustomLicensePage.name,
+              path: CustomLicensePage.path,
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: const CustomLicensePage(),
               ),
             ),
           ],

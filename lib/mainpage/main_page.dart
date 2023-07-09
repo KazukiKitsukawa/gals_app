@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gals_app/component/base_main_page.dart';
 import 'package:gals_app/mainpage/gals_string.dart';
@@ -33,8 +34,6 @@ class MainPage extends HookConsumerWidget {
     }, []);
     return BaseMainPage(
       showAppbar: false,
-      title: 'test',
-      isSafeArea: false,
       child: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
@@ -42,12 +41,11 @@ class MainPage extends HookConsumerWidget {
             flexibleSpace: const FlexibleSpaceBar(
               background: Image(
                 image: GalsAppAssetImage.artistImage,
-                width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
             automaticallyImplyLeading: false,
-            expandedHeight: MediaQuery.of(context).size.height / 4,
+            expandedHeight: 200.w,
             backgroundColor: GalsColor.whiteColor,
           ),
           SliverToBoxAdapter(
@@ -55,7 +53,10 @@ class MainPage extends HookConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Text(
                 GalsString.aboutMe,
-                style: UseGoogleFont.lemon.style.copyWith(color: GalsColor.backgroundColor, fontSize: size36),
+                style: UseGoogleFont.lemon.style.copyWith(
+                  color: GalsColor.backgroundColor,
+                  fontSize: size36,
+                ),
               ),
             ),
           ),
@@ -152,14 +153,14 @@ class MainPage extends HookConsumerWidget {
                       ),
                       Positioned(
                         top: 5,
-                        left: 15,
+                        left: 15.w,
                         child: Hero(
                           tag: data[index].memberName,
                           child: Text(
                             data[index].memberName,
                             style: UseGoogleFont.lemon.style.copyWith(
                               color: GalsColor.whiteColor,
-                              fontSize: size24,
+                              fontSize: size24.sp,
                             ),
                           ),
                         ),
@@ -229,16 +230,19 @@ class MainPage extends HookConsumerWidget {
                                                 Radius.circular(8),
                                               ),
                                             ),
-                                            height: 600,
+                                            height: 600.sp,
                                             child: SingleChildScrollView(
                                               physics: const ClampingScrollPhysics(),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 4),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: data[index].imageUrl,
+                                                  Center(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: data[index].imageUrl,
+                                                        width: 200.w,
+                                                      ),
                                                     ),
                                                   ),
                                                   Row(
@@ -306,7 +310,7 @@ class MainPage extends HookConsumerWidget {
                                 child: Text(
                                   data[index].title,
                                   style: UseGoogleFont.zenKaku.style.copyWith(
-                                    fontSize: size12,
+                                    fontSize: size12.sp,
                                     color: GalsColor.backgroundColor,
                                   ),
                                 ),

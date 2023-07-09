@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gals_app/calender/calendar_page.dart';
 import 'package:gals_app/mainpage/main_page.dart';
+import 'package:gals_app/resources/assets/images.dart';
 import 'package:gals_app/setting/setting.dart';
+import 'package:gals_app/thankyou_page/thankyou_gals_page.dart';
 import 'package:gals_app/util/color.dart';
 import 'package:gals_app/util/font.dart';
-
-import 'navigation_icon.dart';
+import 'package:gals_app/navigation/navigation_icon.dart';
 
 class GalsNavigationBar extends StatefulWidget {
   const GalsNavigationBar({Key? key, required this.child}) : super(key: key);
@@ -15,21 +17,7 @@ class GalsNavigationBar extends StatefulWidget {
   State<GalsNavigationBar> createState() => _GalsNavigationBarState();
 }
 
-class _GalsNavigationBarState extends State<GalsNavigationBar> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+class _GalsNavigationBarState extends State<GalsNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +34,32 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> with SingleTicker
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NavigationIcon(
+                name: NavigationItem.thankYouForGALS.name,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: NavigationItem.thankYouForGALS.icon,
+                    ),
+                    Text(
+                      NavigationItem.thankYouForGALS.text,
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        fontSize: size12,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              NavigationIcon(
                 name: NavigationItem.home.name,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    NavigationItem.home.icon,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: NavigationItem.home.icon,
+                    ),
                     Text(
                       NavigationItem.home.text,
                       style: UseGoogleFont.zenKaku.style.copyWith(
@@ -65,12 +74,16 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> with SingleTicker
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    NavigationItem.top.icon,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: NavigationItem.top.icon,
+                    ),
                     Text(
                       NavigationItem.top.text,
                       style: UseGoogleFont.zenKaku.style.copyWith(
                         fontSize: size12,
                       ),
+                      textAlign: TextAlign.center,
                     )
                   ],
                 ),
@@ -80,7 +93,10 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> with SingleTicker
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    NavigationItem.setting.icon,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: NavigationItem.setting.icon,
+                    ),
                     Text(
                       NavigationItem.setting.text,
                       style: UseGoogleFont.zenKaku.style.copyWith(
@@ -101,12 +117,24 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> with SingleTicker
 }
 
 enum NavigationItem {
+  thankYouForGALS(
+    navigationIndex: 0,
+    text: 'トップページ',
+    icon: Image(
+      width: 60,
+      image: GalsAppAssetImage.splashPicture,
+      color: Colors.black87,
+    ),
+    path: ThankYouGalsPage.path,
+    name: ThankYouGalsPage.name,
+  ),
   home(
     navigationIndex: 1,
     text: 'ホーム',
     icon: Icon(
-      Icons.home,
+      FontAwesomeIcons.house,
       size: 28,
+      color: Colors.black87,
     ),
     path: MainPage.path,
     name: MainPage.name,
@@ -115,7 +143,8 @@ enum NavigationItem {
     navigationIndex: 2,
     text: 'カレンダー',
     icon: Icon(
-      Icons.calendar_month,
+      FontAwesomeIcons.calendar,
+      color: Colors.black87,
       size: 28,
     ),
     path: CalendarPage.path,
@@ -125,7 +154,8 @@ enum NavigationItem {
     navigationIndex: 3,
     text: '設定',
     icon: Icon(
-      Icons.settings,
+      FontAwesomeIcons.bars,
+      color: Colors.black87,
       size: 28,
     ),
     path: Setting.path,
@@ -141,7 +171,7 @@ enum NavigationItem {
   });
   final int navigationIndex;
   final String text;
-  final Icon icon;
+  final Widget icon;
   final String path;
   final String name;
 }

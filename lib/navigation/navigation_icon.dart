@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class NavigationIcon extends StatelessWidget {
@@ -14,11 +15,11 @@ class NavigationIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: SizedBox(
-        width: 70,
-        child: GestureDetector(
-          onTap: () => context.goNamed(_name),
+    return GestureDetector(
+      onTap: () => context.goNamed(_name),
+      child: InkWell(
+        child: SizedBox(
+          width: 70.w,
           child: _child,
         ),
       ),

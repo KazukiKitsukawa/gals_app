@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gals_app/calendar_detail/calendar_detail_page.dart';
 import 'package:gals_app/calender/calendar_notifier.dart';
 import 'package:gals_app/calender/state/viewitem/calendar_item.dart';
@@ -37,7 +38,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     final calendarItem = ref.watch(calenderNotifier.select((value) => value.calenderItem));
     return BaseMainPage(
       showAppbar: false,
-      title: '',
       isSafeArea: true,
       child: SizedBox(
         child: calendarItem.when(
@@ -49,12 +49,47 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
             );
           },
-          error: (error, _) => ElevatedButton(
-            onPressed: () {},
-            child: Container(
-              color: Colors.green,
-            ),
-          ),
+          error: (error, _) {
+            return Container(
+              alignment: Alignment.center,
+              color: GalsColor.whiteColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: Image(
+                      image: GalsAppAssetImage.splashPicture,
+                      color: GalsColor.backgroundColor,
+                    ),
+                  ),
+                  Text(
+                    'エラーが発生しました。再度読み込んでください。',
+                    style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size16.sp),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GalsColor.backgroundColor,
+                        textStyle: TextStyle(
+                          color: GalsColor.whiteColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        ref.watch(calenderNotifier.notifier).init();
+                      },
+                      child: Text(
+                        '再読み込み',
+                        style: UseGoogleFont.zenKaku.style
+                            .copyWith(color: GalsColor.whiteColor, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
           loading: () => Center(
             child: Image(
               color: GalsColor.backgroundColor,
@@ -133,7 +168,7 @@ class _CalendarBodyState extends State<CalendarBody> {
           pageJumpingEnabled: true,
           focusedDay: _focusedDay,
           locale: 'ja_JP',
-          daysOfWeekHeight: 24,
+          daysOfWeekHeight: 24.sp,
           selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
           eventLoader: getEvent,
           rowHeight: 60,
@@ -180,7 +215,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                 child: Text(
                   dowText,
                   style: UseGoogleFont.zenKaku.style.copyWith(
-                    fontSize: size14,
+                    fontSize: size14.sp,
                     color: headerTextColor(day),
                   ),
                 ),
@@ -189,17 +224,17 @@ class _CalendarBodyState extends State<CalendarBody> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: ListView(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: getEvent(_selectedDay!)
                 .map(
                   (e) => Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0x6974b3d2),
+                    decoration: BoxDecoration(
+                      color: const Color(0x6974b3d2),
                       border: Border(
-                        bottom: BorderSide(color: Colors.white),
+                        bottom: BorderSide(color: GalsColor.whiteColor),
                       ),
                     ),
                     child: ListTile(

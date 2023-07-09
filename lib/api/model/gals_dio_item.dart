@@ -3,8 +3,8 @@ class GalsDioItem {
     this.baseUrl = '',
     this.origin = '',
     this.webId = '',
-    this.connectTime = const Duration(seconds: 5000),
-    this.receiveTime = const Duration(seconds: 15000),
+    this.connectTime = const Duration(seconds: 20),
+    this.receiveTime = const Duration(seconds: 40),
     this.basicAuth = '',
     this.basicPass = '',
   });
