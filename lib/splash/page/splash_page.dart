@@ -14,10 +14,7 @@ class SplashPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('起動開始');
-
-    final SplashPageNotifier splashPage =
-        ref.watch(splashPageNotifier.notifier);
+    final SplashPageNotifier splashPage = ref.watch(splashPageNotifier.notifier);
 
     ref.listen<SplashPageState>(splashPageNotifier, (previous, next) async {
       if (next.initialCheck) {
