@@ -25,7 +25,7 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(12),
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           decoration: BoxDecoration(
             color: GalsColor.backgroundColor.withOpacity(0.5),
             borderRadius: const BorderRadius.all(Radius.circular(24)),
@@ -45,7 +45,7 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
                     Text(
                       NavigationItem.thankYouForGALS.text,
                       style: UseGoogleFont.zenKaku.style.copyWith(
-                        fontSize: size12,
+                        fontSize: 10,
                       ),
                     )
                   ],

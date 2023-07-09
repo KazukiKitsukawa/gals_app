@@ -19,5 +19,12 @@ class GalsAppAssetImage {
   /// RAMU画像
   static const AssetImage ramuImage = AssetImage('images/ramu.jpeg');
 
+  /// G画像
   static const AssetImage gImage = AssetImage('images/g.png');
+
+  /// 8bit 画像
+  static const AssetImage bitMarine = AssetImage('images/8bit_marine.png');
+  static const AssetImage bitLuna = AssetImage('images/8bit_luna.png');
+  static const AssetImage bitJuli = AssetImage('images/8bit_juli.png');
+  static const AssetImage bitRamu = AssetImage('images/8bit_ramu.png');
 }
