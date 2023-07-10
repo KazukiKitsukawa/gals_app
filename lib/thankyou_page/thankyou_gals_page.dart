@@ -235,11 +235,19 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                 isAssembly = true;
               });
             },
-            child: Text(
-              'We are GALS',
-              style: UseGoogleFont.lemon.style.copyWith(
+            child: AnimatedCrossFade(
+              firstChild: Image(
+                image: GalsAppAssetImage.splashPicture,
                 color: GalsColor.backgroundColor,
+                width: 125,
               ),
+              secondChild: Image(
+                image: GalsAppAssetImage.splashPicture,
+                color: GalsColor.backgroundColor.withOpacity(0.7),
+                width: 125,
+              ),
+              crossFadeState: isAssembly ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              duration: const Duration(milliseconds: 600),
             ),
           ),
         ],

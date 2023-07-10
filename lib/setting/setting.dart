@@ -7,6 +7,7 @@ import 'package:gals_app/setting/setting_page/license_page.dart';
 import 'package:gals_app/setting/setting_page/privacy_policy.dart';
 import 'package:gals_app/util/color.dart';
 import 'package:gals_app/util/font.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Setting extends StatefulWidget {
   const Setting({Key? key}) : super(key: key);
@@ -53,6 +54,37 @@ class _SettingState extends State<Setting> {
               Divider(
                 color: GalsColor.backgroundColor,
               ),
+              ListTile(
+                minVerticalPadding: 16,
+                title: Wrap(
+                  children: [
+                    Text(
+                      '公式Twitter',
+                      style: UseGoogleFont.zenKaku.style.copyWith(
+                        color: GalsColor.blackColor,
+                        fontSize: size16,
+                      ),
+                    ),
+                  ],
+                ),
+                trailing: Wrap(
+                  spacing: 32,
+                  children: [
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: GalsColor.blackColor,
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  launchUrl(
+                    Uri.parse('https://twitter.com/gals__official'),
+                  );
+                },
+              ),
+              Divider(
+                color: GalsColor.backgroundColor,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Center(
@@ -64,18 +96,23 @@ class _SettingState extends State<Setting> {
               ),
               Text(
                 'このアプリはGALS非公式アプリになります。',
-                style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size12, color: GalsColor.backgroundColor),
+                style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size14, color: GalsColor.backgroundColor),
               ),
               Text(
                 '非公式の為、公式にご連絡はお控えください。',
-                style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size12, color: GalsColor.backgroundColor),
+                style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size14, color: GalsColor.backgroundColor),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Align(
                   alignment: Alignment.topRight,
-                  child: Text('© nano-invitation 2023 All rights reserved.',
-                      style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size12, color: GalsColor.backgroundColor)),
+                  child: Text(
+                    '© FiZZ 2023 All rights reserved.',
+                    style: UseGoogleFont.zenKaku.style.copyWith(
+                      fontSize: size14,
+                      color: GalsColor.backgroundColor,
+                    ),
+                  ),
                 ),
               )
             ],

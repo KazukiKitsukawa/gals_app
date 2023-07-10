@@ -17,8 +17,13 @@ class Application extends StatelessWidget {
         DefaultCupertinoLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate
       ],
-      theme: ThemeData.light(
+      theme: ThemeData(
         useMaterial3: true,
+        colorScheme: const ColorScheme.light(),
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: const ColorScheme.dark(),
       ),
       routerConfig: router,
     );

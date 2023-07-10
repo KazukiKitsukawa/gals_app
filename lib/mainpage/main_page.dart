@@ -230,7 +230,6 @@ class MainPage extends HookConsumerWidget {
                                                 Radius.circular(8),
                                               ),
                                             ),
-                                            height: 600.sp,
                                             child: SingleChildScrollView(
                                               physics: const ClampingScrollPhysics(),
                                               child: Column(
@@ -341,85 +340,6 @@ class MainPage extends HookConsumerWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Column(
-                children: [
-                  Text(
-                    GalsString.other,
-                    style: UseGoogleFont.lemon.style.copyWith(
-                      color: GalsColor.backgroundColor,
-                      fontSize: size36,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(GalsColor.backgroundColor),
-                          ),
-                          onPressed: () {
-                            launchUrl(Uri.parse('https://twitter.com/gals__official'));
-                          },
-                          child: SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.twitter,
-                                  size: 32,
-                                  color: GalsColor.whiteColor,
-                                ),
-                                const Image(
-                                  width: 100,
-                                  height: 36,
-                                  image: GalsAppAssetImage.splashPicture,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(GalsColor.backgroundColor),
-                          ),
-                          onPressed: () {
-                            launchUrl(Uri.parse('https://gals-id.myshopify.com/'));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 50,
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 8),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: FaIcon(
-                                      FontAwesomeIcons.shopify,
-                                      size: 32,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                GalsString.shopify,
-                                style: UseGoogleFont.lemon.style.copyWith(fontSize: size16),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );
