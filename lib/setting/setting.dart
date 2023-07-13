@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gals_app/component/base_main_page.dart';
 import 'package:gals_app/component/setting_list.dart';
 import 'package:gals_app/resources/assets/images.dart';
+import 'package:gals_app/set_list/presentation/setlist_page.dart';
 import 'package:gals_app/setting/setting_page/app_version.dart';
 import 'package:gals_app/setting/setting_page/license_page.dart';
 import 'package:gals_app/setting/setting_page/privacy_policy.dart';
@@ -81,6 +82,13 @@ class _SettingState extends State<Setting> {
                     Uri.parse('https://twitter.com/gals__official'),
                   );
                 },
+              ),
+              Divider(
+                color: GalsColor.backgroundColor,
+              ),
+              const SettingListTile(
+                name: SetListPage.name,
+                settingText: 'セットリスト',
               ),
               Divider(
                 color: GalsColor.backgroundColor,

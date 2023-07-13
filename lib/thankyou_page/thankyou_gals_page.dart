@@ -110,21 +110,22 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
             padding: const EdgeInsets.all(8.0),
             child: Text(
               '2021年6月6日〜2023年7月4日',
-              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size18.sp),
+              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size24.sp),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '最後の最後まで素敵なライブを見せてくれてありがとう！',
-              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size12.sp),
+              textAlign: TextAlign.center,
+              '最後の最後まで素敵なライブを\n見せてくれてありがとう！',
+              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size18.sp),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'GALS is Forever!!',
-              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size18.sp),
+              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size24.sp),
             ),
           ),
           Row(
@@ -149,7 +150,7 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                       visible: isAssembly,
                       child: const Image(
                         image: GalsAppAssetImage.bitJuli,
-                        width: 50,
+                        width: 75,
                       ),
                     ),
                   ),
@@ -174,7 +175,7 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                       visible: isAssembly,
                       child: const Image(
                         image: GalsAppAssetImage.bitRamu,
-                        width: 50,
+                        width: 75,
                       ),
                     ),
                   ),
@@ -197,7 +198,7 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                     padding: EdgeInsets.all(8.0),
                     child: Image(
                       image: GalsAppAssetImage.bitLuna,
-                      width: 50,
+                      width: 75,
                     ),
                   ),
                 ),
@@ -221,7 +222,7 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                       visible: isAssembly,
                       child: const Image(
                         image: GalsAppAssetImage.bitMarine,
-                        width: 50,
+                        width: 75,
                       ),
                     ),
                   ),
@@ -229,25 +230,28 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
               ),
             ],
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isAssembly = true;
-              });
-            },
-            child: AnimatedCrossFade(
-              firstChild: Image(
-                image: GalsAppAssetImage.splashPicture,
-                color: GalsColor.backgroundColor,
-                width: 125,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isAssembly = true;
+                });
+              },
+              child: AnimatedCrossFade(
+                firstChild: Image(
+                  image: GalsAppAssetImage.splashPicture,
+                  color: GalsColor.backgroundColor,
+                  width: 150,
+                ),
+                secondChild: Image(
+                  image: GalsAppAssetImage.splashPicture,
+                  color: GalsColor.backgroundColor.withOpacity(0.7),
+                  width: 150,
+                ),
+                crossFadeState: isAssembly ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                duration: const Duration(milliseconds: 600),
               ),
-              secondChild: Image(
-                image: GalsAppAssetImage.splashPicture,
-                color: GalsColor.backgroundColor.withOpacity(0.7),
-                width: 125,
-              ),
-              crossFadeState: isAssembly ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              duration: const Duration(milliseconds: 600),
             ),
           ),
         ],

@@ -18,12 +18,11 @@ class Application extends StatelessWidget {
         DefaultWidgetsLocalizations.delegate
       ],
       theme: ThemeData(
+        primarySwatch: Colors.pink,
         useMaterial3: true,
-        colorScheme: const ColorScheme.light(),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        colorScheme: const ColorScheme.dark(),
       ),
       routerConfig: router,
     );

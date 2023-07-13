@@ -5,6 +5,7 @@ import 'package:gals_app/mainpage/main_page.dart';
 import 'package:gals_app/mainpage/state/viewitem/gals_member_info.dart';
 import 'package:gals_app/member_detail/member_detail_page.dart';
 import 'package:gals_app/navigation/gals_navigation_bar.dart';
+import 'package:gals_app/set_list/presentation/setlist_page.dart';
 import 'package:gals_app/setting/setting.dart';
 import 'package:gals_app/setting/setting_page/app_version.dart';
 import 'package:gals_app/setting/setting_page/license_page.dart';
@@ -125,6 +126,14 @@ final router = GoRouter(
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: const CustomLicensePage(),
+              ),
+            ),
+            GoRoute(
+              name: SetListPage.name,
+              path: SetListPage.path,
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: const SetListPage(),
               ),
             ),
           ],
