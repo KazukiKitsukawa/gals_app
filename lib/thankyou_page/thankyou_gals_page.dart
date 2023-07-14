@@ -16,7 +16,6 @@ class ThankYouGalsPage extends StatefulWidget {
 }
 
 class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProviderStateMixin {
-  bool isAssembly = false;
   late AnimationController _juliController;
   late AnimationController _ramuController;
   late AnimationController _lunaController;
@@ -144,14 +143,11 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                 },
                 child: SlideTransition(
                   position: _juliAnimation,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Visibility(
-                      visible: isAssembly,
-                      child: const Image(
-                        image: GalsAppAssetImage.bitJuli,
-                        width: 75,
-                      ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Image(
+                      image: GalsAppAssetImage.bitJuli,
+                      width: 75,
                     ),
                   ),
                 ),
@@ -169,14 +165,11 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                 },
                 child: SlideTransition(
                   position: _ramuAnimation,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Visibility(
-                      visible: isAssembly,
-                      child: const Image(
-                        image: GalsAppAssetImage.bitRamu,
-                        width: 75,
-                      ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Image(
+                      image: GalsAppAssetImage.bitRamu,
+                      width: 75,
                     ),
                   ),
                 ),
@@ -216,43 +209,16 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
                 },
                 child: SlideTransition(
                   position: _marineAnimation,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Visibility(
-                      visible: isAssembly,
-                      child: const Image(
-                        image: GalsAppAssetImage.bitMarine,
-                        width: 75,
-                      ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Image(
+                      image: GalsAppAssetImage.bitMarine,
+                      width: 75,
                     ),
                   ),
                 ),
               ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isAssembly = true;
-                });
-              },
-              child: AnimatedCrossFade(
-                firstChild: Image(
-                  image: GalsAppAssetImage.splashPicture,
-                  color: GalsColor.backgroundColor,
-                  width: 150,
-                ),
-                secondChild: Image(
-                  image: GalsAppAssetImage.splashPicture,
-                  color: GalsColor.backgroundColor.withOpacity(0.7),
-                  width: 150,
-                ),
-                crossFadeState: isAssembly ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                duration: const Duration(milliseconds: 600),
-              ),
-            ),
           ),
         ],
       ),

@@ -246,7 +246,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                         final calendarListItem =
                             widget.calendarItem.firstWhere((element) => element.title == e.toString());
                         context.pushNamed(CalendarDetailPage.name,
-                            queryParams: {'calendarItem': jsonEncode(calendarListItem.toJson())});
+                            queryParameters: {'calendarItem': jsonEncode(calendarListItem.toJson())});
                       },
                     ),
                   ),

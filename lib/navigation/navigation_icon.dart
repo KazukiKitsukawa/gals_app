@@ -5,18 +5,22 @@ import 'package:go_router/go_router.dart';
 class NavigationIcon extends StatelessWidget {
   const NavigationIcon({
     super.key,
-    required String name,
+    required int index,
     required Widget child,
+    required StatefulNavigationShell statefulNavigationShell,
   })  : _child = child,
-        _name = name;
+        _index = index,
+        _statefulNavigationShell = statefulNavigationShell;
 
-  final String _name;
+  final int _index;
   final Widget _child;
+  final StatefulNavigationShell _statefulNavigationShell;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.goNamed(_name),
+      onTap: () =>
+          _statefulNavigationShell.goBranch(_index, initialLocation: _index == _statefulNavigationShell.currentIndex),
       child: InkWell(
         child: SizedBox(
           width: 70.w,

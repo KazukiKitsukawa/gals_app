@@ -8,16 +8,16 @@ import 'package:gals_app/thankyou_page/thankyou_gals_page.dart';
 import 'package:gals_app/util/color.dart';
 import 'package:gals_app/util/font.dart';
 import 'package:gals_app/navigation/navigation_icon.dart';
+import 'package:go_router/go_router.dart';
 
-class GalsNavigationBar extends StatefulWidget {
-  const GalsNavigationBar({Key? key, required this.child}) : super(key: key);
+class GalsNavigationBar extends StatelessWidget {
+  const GalsNavigationBar(
+    this.navigationShell, {
+    Key? key,
+  }) : super(key: key);
 
-  final Widget child;
-  @override
-  State<GalsNavigationBar> createState() => _GalsNavigationBarState();
-}
+  final StatefulNavigationShell navigationShell;
 
-class _GalsNavigationBarState extends State<GalsNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,8 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NavigationIcon(
-                name: NavigationItem.thankYouForGALS.name,
+                index: NavigationItem.thankYouForGALS.navigationIndex,
+                statefulNavigationShell: navigationShell,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -52,7 +53,8 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
                 ),
               ),
               NavigationIcon(
-                name: NavigationItem.home.name,
+                index: NavigationItem.home.navigationIndex,
+                statefulNavigationShell: navigationShell,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -70,7 +72,8 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
                 ),
               ),
               NavigationIcon(
-                name: NavigationItem.top.name,
+                index: NavigationItem.top.navigationIndex,
+                statefulNavigationShell: navigationShell,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -89,7 +92,8 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
                 ),
               ),
               NavigationIcon(
-                name: NavigationItem.setting.name,
+                index: NavigationItem.setting.navigationIndex,
+                statefulNavigationShell: navigationShell,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -111,7 +115,7 @@ class _GalsNavigationBarState extends State<GalsNavigationBar> {
         ),
       ),
       resizeToAvoidBottomInset: true,
-      body: widget.child,
+      body: navigationShell,
     );
   }
 }
