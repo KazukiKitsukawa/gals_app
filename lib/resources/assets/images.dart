@@ -27,4 +27,11 @@ class GalsAppAssetImage {
   static const AssetImage bitLuna = AssetImage('images/8bit_luna.png');
   static const AssetImage bitJuli = AssetImage('images/8bit_juli.png');
   static const AssetImage bitRamu = AssetImage('images/8bit_ramu.png');
+
+  static List<AssetImage> galsBitPicture = [
+    const AssetImage('images/8bit_marine.png'),
+    const AssetImage('images/8bit_luna.png'),
+    const AssetImage('images/8bit_juli.png'),
+    const AssetImage('images/8bit_ramu.png')
+  ];
 }

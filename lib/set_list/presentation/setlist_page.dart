@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gals_app/component/base_main_page.dart';
 import 'package:gals_app/component/base_text_button.dart';
+import 'package:gals_app/resources/assets/images.dart';
 import 'package:gals_app/set_list/set_list_notifier.dart';
-import 'package:gals_app/set_list/state/setlist_state.dart';
 import 'package:gals_app/util/color.dart';
+import 'package:gals_app/util/custom_dialog.dart';
+import 'package:gals_app/util/font.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart' as picker;
 import 'package:share_plus/share_plus.dart';
 
 class SetListPage extends StatefulHookConsumerWidget {
@@ -19,50 +24,32 @@ class SetListPage extends StatefulHookConsumerWidget {
 }
 
 class _SetListPageState extends ConsumerState<SetListPage> {
-  final FocusNode _focusNode = FocusNode();
-  List<Widget> dropdown = [];
-  int setListSongIndex = 1;
-  List<String> setLists = [];
+  List<Widget> dropdownWidget = [];
+  List<String> setMusicList = [];
+  int setListSongIndex = 0;
   @override
   void initState() {
-    super.initState();
-    // ウィジェットが表示されたときにフォーカスを当てる
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.addListener(() {
-        FocusScope.of(context).requestFocus(_focusNode);
-      });
+      ref.watch(setListNotifier.notifier).fetchMusicList();
     });
-  }
-
-  void plusWidget(SetListState musicItems) {
-    setState(() {
-      setLists.add('');
-      dropdown.add(DropDownMusicListWidget(
-        focusNode: _focusNode,
-        music: musicItems,
-        index: dropdown.isEmpty ? setListSongIndex : setListSongIndex = setListSongIndex + 1,
-        setLists: setLists,
-        onValueChanged: (String? value) {
-          _handleValueChanged(value ?? '', setListSongIndex - 1);
-        },
-      ));
-    });
-  }
-
-  void minusWidget() {
-    if (dropdown.isEmpty) {
-      return;
-    }
-    setListSongIndex = setListSongIndex - 1;
-    setLists.removeLast();
-    setState(() {
-      dropdown.removeLast();
-    });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final musics = ref.watch(setListNotifier.select((value) => value));
+    // Firebaseから取得してきた音楽情報
+    final musics = ref.watch(setListNotifier.select((value) => value.musicList));
+    // DropDownがnullか判断するためのFlg
+    final checkFlg = ref.watch(setListNotifier.select((value) => value.isDropDownNull));
+    // 日時選択で選んだ値を監視するための変数
+    final selectDate = ref.watch(setListNotifier.select((value) => value.selectedDateTimeToString));
+    // Shareする内容の格納
+    final shareText = ref.watch(setListNotifier.select((value) => value.shareText));
+
+    final hashTagTextController = ref.read(hashTagText);
+    final liveHouseTextController = ref.read(liveHouseText);
+
+    int ranNum = 0;
     return BaseMainPage(
       onPop: true,
       showAppbar: true,
@@ -77,51 +64,95 @@ class _SetListPageState extends ConsumerState<SetListPage> {
                   Row(
                     children: [
                       const Text('ライブ会場:'),
-                      Expanded(child: TextFormField()),
-                    ],
-                  ),
-                  for (Widget dropDownWidget in dropdown) ...{
-                    dropDownWidget,
-                  },
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              plusWidget(galsMusic);
-                            });
-                          },
-                          child: FaIcon(
-                            FontAwesomeIcons.plus,
-                            size: 36,
-                            color: GalsColor.backgroundColor,
-                          ),
+                      Flexible(
+                        child: TextFormField(
+                          controller: liveHouseTextController,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            minusWidget();
-                          });
-                        },
-                        child: FaIcon(
-                          FontAwesomeIcons.minus,
-                          size: 36,
-                          color: GalsColor.backgroundColor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: BaseTextButton(
-                            onPressed: () {
-                              print(setLists);
+                          picker.DatePicker.showDatePicker(
+                            context,
+                            locale: picker.LocaleType.jp,
+                            minTime: DateTime(2021),
+                            maxTime: DateTime.now(),
+                            currentTime: DateTime.now(),
+                            onConfirm: (DateTime selectDateTime) {
+                              ref.watch(setListNotifier.notifier).isDateTimeToString(selectDateTime);
                             },
-                            buttonText: '共有する'),
-                      ),
+                          );
+                        },
+                        child: Text(selectDate != '' ? selectDate : '日付選択'),
+                      )
                     ],
+                  ),
+                  for (Widget dropDownWidget in dropdownWidget) ...{
+                    dropDownWidget,
+                  },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Text('#'),
+                        Expanded(
+                          child: TextFormField(
+                            controller: hashTagTextController,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: AbsorbPointer(
+                            absorbing: checkFlg,
+                            child: GestureDetector(
+                              onTap: () => plusWidget(galsMusic, checkFlg),
+                              child: FaIcon(
+                                FontAwesomeIcons.plus,
+                                size: 36,
+                                color: GalsColor.backgroundColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => minusWidget(),
+                          child: FaIcon(
+                            FontAwesomeIcons.minus,
+                            size: 36,
+                            color: GalsColor.backgroundColor,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: BaseTextButton(
+                            onPressed: () async {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              setState(() {
+                                ranNum = Random().nextInt(GalsAppAssetImage.galsBitPicture.length);
+                              });
+                              final box = context.findRenderObject() as RenderBox?;
+                              if (setMusicList.isEmpty) {
+                                return setListEmptyError(context, ranNum);
+                              } else if (selectDate.isEmpty) {
+                                return dateError(context, ranNum);
+                              } else {
+                                ref.watch(setListNotifier.notifier).shareText(
+                                      liveHouseTextController.text,
+                                      selectDate,
+                                      setMusicList,
+                                      hashTagTextController.text,
+                                    );
+                                await Share.share(
+                                  shareText,
+                                  sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                                );
+                              }
+                            },
+                            buttonText: '共有する',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -136,25 +167,64 @@ class _SetListPageState extends ConsumerState<SetListPage> {
     );
   }
 
-  void _handleValueChanged(String? value, int index) => setLists[index] = value ?? '';
+  /// DropDown追加処理
+  void plusWidget(List<String> musicItems, bool checkFlg) {
+    final setListNotifierProvider = ref.watch(setListNotifier.notifier);
+    setListNotifierProvider.isDropDownValueNull(checkFlg);
+    final isDropDownNullCheck = ref.watch(setListNotifier.select((value) => value.isDropDownNull));
+    setMusicList.add('');
+    dropdownWidget.add(
+      DropDownMusicListWidget(
+        music: musicItems,
+        index: setListSongIndex,
+        setList: setMusicList,
+        onValueChanged: (String? value, int index) {
+          ref.watch(setListNotifier.notifier).isDropDownValueNull(isDropDownNullCheck);
+        },
+      ),
+    );
+
+    setListSongIndex = setListSongIndex + 1;
+  }
+
+  /// DropDown削除処理
+  void minusWidget() {
+    if (dropdownWidget.isEmpty) {
+      ref.watch(setListNotifier.notifier).isDropDownValueNull(true);
+      return;
+    }
+    if (dropdownWidget.length == 1) {
+      setListSongIndex = 0;
+      ref.watch(setListNotifier.notifier).isDropDownValueNull(true);
+    } else {
+      setListSongIndex = setListSongIndex - 1;
+    }
+
+    setState(() {
+      setMusicList.removeLast();
+      dropdownWidget.removeLast();
+    });
+  }
 }
 
+///
+/// DropDownのList格納用Widget
+///
 class DropDownMusicListWidget extends StatefulWidget {
   const DropDownMusicListWidget({
     super.key,
-    required FocusNode focusNode,
-    required SetListState music,
+    required List<String> music,
     required int index,
-    required List<String> setLists,
     required this.onValueChanged,
-  })  : _focusNode = focusNode,
-        _music = music,
-        _index = index;
+    required List<String> setList,
+  })  : _music = music,
+        _index = index,
+        _setList = setList;
 
-  final FocusNode _focusNode;
-  final SetListState _music;
+  final List<String> _music;
   final int _index;
-  final Function(String?) onValueChanged;
+  final Function(String?, int) onValueChanged;
+  final List<String> _setList;
 
   @override
   State<DropDownMusicListWidget> createState() => _DropDownMusicListWidgetState();
@@ -163,34 +233,37 @@ class DropDownMusicListWidget extends StatefulWidget {
 class _DropDownMusicListWidgetState extends State<DropDownMusicListWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Text('${widget._index}曲目:'),
-          Expanded(
+    return Row(
+      children: [
+        Text('${widget._index + 1}曲目：'),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: DropdownButtonFormField(
+              style: UseGoogleFont.zenKaku.style.copyWith(
+                fontSize: size16,
+                color: GalsColor.blackColor,
+              ),
               borderRadius: const BorderRadius.all(
                 Radius.circular(8),
               ),
-              value: widget._music.musicList.first,
-              menuMaxHeight: 200,
-              focusNode: widget._focusNode,
-              elevation: 4,
-              items: widget._music.musicList
-                  .map((musicList) => DropdownMenuItem(value: musicList, child: Text(musicList)))
-                  .toList(),
+              menuMaxHeight: 300,
+              elevation: 1,
+              dropdownColor: GalsColor.backgroundColor,
+              items:
+                  widget._music.map((musicList) => DropdownMenuItem(value: musicList, child: Text(musicList))).toList(),
               onChanged: (String? value) {
-                setState(
-                  () {
-                    widget.onValueChanged(value);
-                  },
-                );
+                if (value == null || value.isEmpty) {
+                  return;
+                }
+                widget._setList[widget._index] = value;
+
+                widget.onValueChanged(value, widget._index);
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -17,7 +17,6 @@ class SettingListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      minVerticalPadding: 16,
       title: Wrap(
         children: [
           Text(

@@ -86,140 +86,141 @@ class _ThankYouGalsPageState extends State<ThankYouGalsPage> with TickerProvider
   Widget build(BuildContext context) {
     return BaseMainPage(
       showAppbar: false,
-      isSafeArea: false,
-      child: Column(
-        children: [
-          Stack(
-            alignment: AlignmentDirectional.bottomCenter,
-            children: [
-              const Image(
+      child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            flexibleSpace: const FlexibleSpaceBar(
+              background: Image(
                 image: GalsAppAssetImage.artistImage,
                 fit: BoxFit.cover,
               ),
-              Positioned(
-                bottom: 15.h,
-                child: Image(
-                  image: GalsAppAssetImage.splashPicture,
-                  color: GalsColor.whiteColor,
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              '2021年6月6日〜2023年7月4日',
-              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size24.sp),
             ),
+            automaticallyImplyLeading: false,
+            expandedHeight: 200.w,
+            backgroundColor: GalsColor.whiteColor,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              textAlign: TextAlign.center,
-              '最後の最後まで素敵なライブを\n見せてくれてありがとう！',
-              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size18.sp),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text(
+                    '2021年6月6日〜2023年7月4日',
+                    style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size24.sp),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '最後の最後まで素敵なライブを\n見せてくれてありがとう！',
+                      style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size18.sp),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'GALS is Forever!!',
+                      style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size24.sp),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _juliController.forward();
+                            _juliController.addStatusListener((status) {
+                              if (status == AnimationStatus.completed) {
+                                _juliController.reverse();
+                              }
+                            });
+                          });
+                        },
+                        child: SlideTransition(
+                          position: _juliAnimation,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Image(
+                              image: GalsAppAssetImage.bitJuli,
+                              width: 60,
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _ramuController.forward();
+                            _ramuController.addStatusListener((status) {
+                              if (status == AnimationStatus.completed) {
+                                _ramuController.reverse();
+                              }
+                            });
+                          });
+                        },
+                        child: SlideTransition(
+                          position: _ramuAnimation,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Image(
+                              image: GalsAppAssetImage.bitRamu,
+                              width: 60,
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _lunaController.forward();
+                            _lunaController.addStatusListener((status) {
+                              if (status == AnimationStatus.completed) {
+                                _lunaController.reverse();
+                              }
+                            });
+                          });
+                        },
+                        child: SlideTransition(
+                          position: _lunaAnimation,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Image(
+                              image: GalsAppAssetImage.bitLuna,
+                              width: 60,
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _marineController.forward();
+                            _marineController.addStatusListener((status) {
+                              if (status == AnimationStatus.completed) {
+                                _marineController.reverse();
+                              }
+                            });
+                          });
+                        },
+                        child: SlideTransition(
+                          position: _marineAnimation,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Image(
+                              image: GalsAppAssetImage.bitMarine,
+                              width: 60,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'GALS is Forever!!',
-              style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size24.sp),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _juliController.forward();
-                    _juliController.addStatusListener((status) {
-                      if (status == AnimationStatus.completed) {
-                        _juliController.reverse();
-                      }
-                    });
-                  });
-                },
-                child: SlideTransition(
-                  position: _juliAnimation,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Image(
-                      image: GalsAppAssetImage.bitJuli,
-                      width: 75,
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _ramuController.forward();
-                    _ramuController.addStatusListener((status) {
-                      if (status == AnimationStatus.completed) {
-                        _ramuController.reverse();
-                      }
-                    });
-                  });
-                },
-                child: SlideTransition(
-                  position: _ramuAnimation,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Image(
-                      image: GalsAppAssetImage.bitRamu,
-                      width: 75,
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _lunaController.forward();
-                    _lunaController.addStatusListener((status) {
-                      if (status == AnimationStatus.completed) {
-                        _lunaController.reverse();
-                      }
-                    });
-                  });
-                },
-                child: SlideTransition(
-                  position: _lunaAnimation,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Image(
-                      image: GalsAppAssetImage.bitLuna,
-                      width: 75,
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _marineController.forward();
-                    _marineController.addStatusListener((status) {
-                      if (status == AnimationStatus.completed) {
-                        _marineController.reverse();
-                      }
-                    });
-                  });
-                },
-                child: SlideTransition(
-                  position: _marineAnimation,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Image(
-                      image: GalsAppAssetImage.bitMarine,
-                      width: 75,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          )
         ],
       ),
     );

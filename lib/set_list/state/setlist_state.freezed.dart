@@ -16,7 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SetListState {
-  List<String> get musicList => throw _privateConstructorUsedError;
+  bool get isDropDownNull =>
+      throw _privateConstructorUsedError; // Firebaseから取得するGALSの楽曲データ
+  AsyncValue<List<String>> get musicList => throw _privateConstructorUsedError;
+  String get selectedDateTimeToString => throw _privateConstructorUsedError;
+  String get shareText => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SetListStateCopyWith<SetListState> get copyWith =>
@@ -29,7 +33,11 @@ abstract class $SetListStateCopyWith<$Res> {
           SetListState value, $Res Function(SetListState) then) =
       _$SetListStateCopyWithImpl<$Res, SetListState>;
   @useResult
-  $Res call({List<String> musicList});
+  $Res call(
+      {bool isDropDownNull,
+      AsyncValue<List<String>> musicList,
+      String selectedDateTimeToString,
+      String shareText});
 }
 
 /// @nodoc
@@ -45,13 +53,28 @@ class _$SetListStateCopyWithImpl<$Res, $Val extends SetListState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isDropDownNull = null,
     Object? musicList = null,
+    Object? selectedDateTimeToString = null,
+    Object? shareText = null,
   }) {
     return _then(_value.copyWith(
+      isDropDownNull: null == isDropDownNull
+          ? _value.isDropDownNull
+          : isDropDownNull // ignore: cast_nullable_to_non_nullable
+              as bool,
       musicList: null == musicList
           ? _value.musicList
           : musicList // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as AsyncValue<List<String>>,
+      selectedDateTimeToString: null == selectedDateTimeToString
+          ? _value.selectedDateTimeToString
+          : selectedDateTimeToString // ignore: cast_nullable_to_non_nullable
+              as String,
+      shareText: null == shareText
+          ? _value.shareText
+          : shareText // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -64,7 +87,11 @@ abstract class _$$_SetListStateCopyWith<$Res>
       __$$_SetListStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> musicList});
+  $Res call(
+      {bool isDropDownNull,
+      AsyncValue<List<String>> musicList,
+      String selectedDateTimeToString,
+      String shareText});
 }
 
 /// @nodoc
@@ -78,13 +105,28 @@ class __$$_SetListStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isDropDownNull = null,
     Object? musicList = null,
+    Object? selectedDateTimeToString = null,
+    Object? shareText = null,
   }) {
     return _then(_$_SetListState(
+      isDropDownNull: null == isDropDownNull
+          ? _value.isDropDownNull
+          : isDropDownNull // ignore: cast_nullable_to_non_nullable
+              as bool,
       musicList: null == musicList
-          ? _value._musicList
+          ? _value.musicList
           : musicList // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as AsyncValue<List<String>>,
+      selectedDateTimeToString: null == selectedDateTimeToString
+          ? _value.selectedDateTimeToString
+          : selectedDateTimeToString // ignore: cast_nullable_to_non_nullable
+              as String,
+      shareText: null == shareText
+          ? _value.shareText
+          : shareText // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -92,20 +134,29 @@ class __$$_SetListStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SetListState implements _SetListState {
-  const _$_SetListState({required final List<String> musicList})
-      : _musicList = musicList;
+  const _$_SetListState(
+      {this.isDropDownNull = false,
+      this.musicList = const AsyncValue.loading(),
+      this.selectedDateTimeToString = '',
+      this.shareText = ''});
 
-  final List<String> _musicList;
   @override
-  List<String> get musicList {
-    if (_musicList is EqualUnmodifiableListView) return _musicList;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_musicList);
-  }
+  @JsonKey()
+  final bool isDropDownNull;
+// Firebaseから取得するGALSの楽曲データ
+  @override
+  @JsonKey()
+  final AsyncValue<List<String>> musicList;
+  @override
+  @JsonKey()
+  final String selectedDateTimeToString;
+  @override
+  @JsonKey()
+  final String shareText;
 
   @override
   String toString() {
-    return 'SetListState(musicList: $musicList)';
+    return 'SetListState(isDropDownNull: $isDropDownNull, musicList: $musicList, selectedDateTimeToString: $selectedDateTimeToString, shareText: $shareText)';
   }
 
   @override
@@ -113,13 +164,20 @@ class _$_SetListState implements _SetListState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SetListState &&
-            const DeepCollectionEquality()
-                .equals(other._musicList, _musicList));
+            (identical(other.isDropDownNull, isDropDownNull) ||
+                other.isDropDownNull == isDropDownNull) &&
+            (identical(other.musicList, musicList) ||
+                other.musicList == musicList) &&
+            (identical(
+                    other.selectedDateTimeToString, selectedDateTimeToString) ||
+                other.selectedDateTimeToString == selectedDateTimeToString) &&
+            (identical(other.shareText, shareText) ||
+                other.shareText == shareText));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_musicList));
+  int get hashCode => Object.hash(runtimeType, isDropDownNull, musicList,
+      selectedDateTimeToString, shareText);
 
   @JsonKey(ignore: true)
   @override
@@ -129,11 +187,20 @@ class _$_SetListState implements _SetListState {
 }
 
 abstract class _SetListState implements SetListState {
-  const factory _SetListState({required final List<String> musicList}) =
-      _$_SetListState;
+  const factory _SetListState(
+      {final bool isDropDownNull,
+      final AsyncValue<List<String>> musicList,
+      final String selectedDateTimeToString,
+      final String shareText}) = _$_SetListState;
 
   @override
-  List<String> get musicList;
+  bool get isDropDownNull;
+  @override // Firebaseから取得するGALSの楽曲データ
+  AsyncValue<List<String>> get musicList;
+  @override
+  String get selectedDateTimeToString;
+  @override
+  String get shareText;
   @override
   @JsonKey(ignore: true)
   _$$_SetListStateCopyWith<_$_SetListState> get copyWith =>

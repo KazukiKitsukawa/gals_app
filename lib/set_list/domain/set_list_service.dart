@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gals_app/set_list/state/setlist_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final setListService = Provider((ref) => SetListService());
@@ -7,7 +6,7 @@ final setListService = Provider((ref) => SetListService());
 class SetListService {
   final firebaseInstance = FirebaseFirestore.instance;
 
-  Future<SetListState> fetchAllMusicList() async {
+  Future<List<String>> fetchAllMusicList() async {
     List<String> musicList = [];
     await firebaseInstance.collectionGroup('music_length').get().then((value) {
       for (var musics in value.docs) {
@@ -16,6 +15,6 @@ class SetListService {
         }
       }
     });
-    return SetListState(musicList: musicList);
+    return musicList;
   }
 }
