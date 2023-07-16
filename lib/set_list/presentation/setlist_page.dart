@@ -27,6 +27,7 @@ class _SetListPageState extends ConsumerState<SetListPage> {
   List<Widget> dropdownWidget = [];
   List<String> setMusicList = [];
   int setListSongIndex = 0;
+  String selectValue = '';
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -43,8 +44,6 @@ class _SetListPageState extends ConsumerState<SetListPage> {
     final checkFlg = ref.watch(setListNotifier.select((value) => value.isDropDownNull));
     // 日時選択で選んだ値を監視するための変数
     final selectDate = ref.watch(setListNotifier.select((value) => value.selectedDateTimeToString));
-    // Shareする内容の格納
-    final shareText = ref.watch(setListNotifier.select((value) => value.shareText));
 
     final hashTagTextController = ref.read(hashTagText);
     final liveHouseTextController = ref.read(liveHouseText);
@@ -63,9 +62,24 @@ class _SetListPageState extends ConsumerState<SetListPage> {
                 children: [
                   Row(
                     children: [
-                      const Text('ライブ会場:'),
+                      Text(
+                        'ライブ会場:',
+                        style: UseGoogleFont.zenKaku.style.copyWith(fontSize: size16, color: GalsColor.backgroundColor),
+                      ),
                       Flexible(
                         child: TextFormField(
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: GalsColor.backgroundColor,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: GalsColor.backgroundColor,
+                              ),
+                            ),
+                          ),
                           controller: liveHouseTextController,
                         ),
                       ),
@@ -82,7 +96,11 @@ class _SetListPageState extends ConsumerState<SetListPage> {
                             },
                           );
                         },
-                        child: Text(selectDate != '' ? selectDate : '日付選択'),
+                        child: Text(
+                          selectDate != '' ? selectDate : '日付選択',
+                          style:
+                              UseGoogleFont.zenKaku.style.copyWith(fontSize: size16, color: GalsColor.backgroundColor),
+                        ),
                       )
                     ],
                   ),
@@ -94,9 +112,25 @@ class _SetListPageState extends ConsumerState<SetListPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const Text('#'),
+                        Text(
+                          '#',
+                          style:
+                              UseGoogleFont.zenKaku.style.copyWith(color: GalsColor.backgroundColor, fontSize: size18),
+                        ),
                         Expanded(
                           child: TextFormField(
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: GalsColor.backgroundColor,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: GalsColor.backgroundColor,
+                                ),
+                              ),
+                            ),
                             controller: hashTagTextController,
                           ),
                         ),
@@ -143,7 +177,7 @@ class _SetListPageState extends ConsumerState<SetListPage> {
                                       hashTagTextController.text,
                                     );
                                 await Share.share(
-                                  shareText,
+                                  ref.watch(setListNotifier.select((value) => value.shareText)),
                                   sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                 );
                               }
@@ -171,7 +205,6 @@ class _SetListPageState extends ConsumerState<SetListPage> {
   void plusWidget(List<String> musicItems, bool checkFlg) {
     final setListNotifierProvider = ref.watch(setListNotifier.notifier);
     setListNotifierProvider.isDropDownValueNull(checkFlg);
-    final isDropDownNullCheck = ref.watch(setListNotifier.select((value) => value.isDropDownNull));
     setMusicList.add('');
     dropdownWidget.add(
       DropDownMusicListWidget(
@@ -179,7 +212,11 @@ class _SetListPageState extends ConsumerState<SetListPage> {
         index: setListSongIndex,
         setList: setMusicList,
         onValueChanged: (String? value, int index) {
-          ref.watch(setListNotifier.notifier).isDropDownValueNull(isDropDownNullCheck);
+          if (setMusicList.length - 1 > index) {
+            ref.watch(setListNotifier.notifier).isDropDownValueNull(false);
+            return;
+          }
+          ref.watch(setListNotifier.notifier).isDropDownValueNull(true);
         },
       ),
     );
@@ -195,11 +232,10 @@ class _SetListPageState extends ConsumerState<SetListPage> {
     }
     if (dropdownWidget.length == 1) {
       setListSongIndex = 0;
-      ref.watch(setListNotifier.notifier).isDropDownValueNull(true);
     } else {
       setListSongIndex = setListSongIndex - 1;
     }
-
+    ref.watch(setListNotifier.notifier).isDropDownValueNull(true);
     setState(() {
       setMusicList.removeLast();
       dropdownWidget.removeLast();
@@ -249,7 +285,7 @@ class _DropDownMusicListWidgetState extends State<DropDownMusicListWidget> {
               ),
               menuMaxHeight: 300,
               elevation: 1,
-              dropdownColor: GalsColor.backgroundColor,
+              dropdownColor: GalsColor.whiteColor,
               items:
                   widget._music.map((musicList) => DropdownMenuItem(value: musicList, child: Text(musicList))).toList(),
               onChanged: (String? value) {

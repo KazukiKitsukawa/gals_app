@@ -20,7 +20,7 @@ class Application extends ConsumerWidget {
         DefaultWidgetsLocalizations.delegate
       ],
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
     );

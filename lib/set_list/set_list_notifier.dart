@@ -17,7 +17,6 @@ class SetListNotifier extends AutoDisposeNotifier<SetListState> {
     ref.onDispose(() {
       ref.watch(liveHouseText).clear();
       ref.watch(hashTagText).clear();
-      print('date');
     });
     return const SetListState();
   }
@@ -52,7 +51,7 @@ class SetListNotifier extends AutoDisposeNotifier<SetListState> {
   /// [selectDate] 選択した日付
   /// [setList] セットリスト
   /// [hashTag]　ハッシュタグ
-  void shareText(String liveHouse, String selectDate, List<String> setList, String hashTag) {
+  void shareText(String liveHouse, String selectDate, List<String> setList, String hashTag) async {
     String text = '';
     if (liveHouse.isEmpty) {
       text = '$selectDate\n${setList.join('\n')}\n\n#$hashTag';
