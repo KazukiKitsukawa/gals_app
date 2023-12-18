@@ -31,13 +31,12 @@ class SplashPage extends HookConsumerWidget {
     }, []);
 
     return Container(
+      alignment: Alignment.center,
       height: double.infinity,
       width: double.infinity,
       color: GalsColor.backgroundColor,
-      child: const Center(
-        child: Image(
-          image: GalsAppAssetImage.splashPicture,
-        ),
+      child: const Image(
+        image: GalsAppAssetImage.splashPicture,
       ),
     );
   }
