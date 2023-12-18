@@ -22,6 +22,7 @@ retrofit + dio
 
 ## その他 DBからの取得など
 firebase cloud storage
+firebase cloud firestore
 
 ## Apple審査状況について
 外部テストまでは承諾済み。 <br>
