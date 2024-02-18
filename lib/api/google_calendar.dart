@@ -13,6 +13,6 @@ abstract class GoogleCalendar {
 
   /// GALSカレンダー取得
   @GET(
-      'https://www.googleapis.com/calendar/v3/calendars/c_n953dmf53qimt5ea8bl2s59r78%40group.calendar.google.com/events?maxResults=2500&key=AIzaSyCOydDr1in82Fu1Z1pO86xbsqh0TNLkIGA')
+      'https://www.googleapis.com/calendar/v3/calendars/c_n953dmf53qimt5ea8bl2s59r78%40group.calendar.google.com/events?maxResults=2500&key=APIKEY')
   Future<GoogleCalendarResponseEntity?> fetchCalendarEvent();
 }
